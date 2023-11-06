@@ -1,14 +1,18 @@
-final.elf : main.o 1.o 2.o 3.o
-	gcc main.o 1.o -o final.elf
+CC = gcc
+CFLAGS = -Wall
+SRC = main.c 1.c 2.c 3.c
+OBJ = $(SRC:.c=.o)
+EXECUTABLE = final.elf
 
-main.o : main.c
-	gcc -c main.c
+.PHONY: all clean
 
-1.o : 1.c
-	gcc -c 1.c
+all: $(EXECUTABLE)
 
-2.o : 2.c
-	gcc -c 2.c
+$(EXECUTABLE): $(OBJ)
+	$(CC) $(CFLAGS) $^ -o $@
 
-3.o : 3.o
-	gcc -c 3.c	
+%.o: %.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+clean:
+	rm -f $(OBJ) $(EXECUTABLE)
