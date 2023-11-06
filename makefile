@@ -1,4 +1,4 @@
-final.elf : main.o 1.o
+final.elf : main.o 1.o 2.o 3.o
 	gcc main.o 1.o -o final.elf
 
 main.o : main.c
