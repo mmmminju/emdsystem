@@ -163,6 +163,12 @@ void level_3_obj_3(int OnOff)
         ;
 }
 
+void *buzzerThread(void *data)
+{
+  //  buzzerPlayLevel1();
+    return NULL;
+}
+
 int main(void)
 {
     HW_init();
