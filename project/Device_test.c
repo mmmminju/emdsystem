@@ -26,10 +26,18 @@ int status = MENU;
 int score;
 static int obstacleX=700;
 static int obstacleY=300;
+
 static int obstacleX2_1=750;
 static int obstacleY2_1=100;
 static int obstacleX2_2=250;
 static int obstacleY2_2=300;
+
+static int obstacleX3_1=750;
+static int obstacleY3_1=100;
+static int obstacleX3_2=250;
+static int obstacleY3_2=400;
+static int obstacleX3_3=410;
+static int obstacleY3_3=330;
 void *score_timer(void *data)
 {
     while (1)
@@ -119,6 +127,47 @@ void level_2_obstacle(int OnOff)
     if(obstacleY2_2 <= 100 || obstacleY2_2 >= 600 - 150)
         obstacleDirection2 *= -1;
 }
+
+void level_3_obstacle(int OnOff)
+{
+
+    static int obstacleDirection1 = 1; // 1: 아래쪽, -1: 위쪽
+    static int obstacleDirection2 = 1; // 1: 아래쪽, -1: 위쪽
+    static int obstacleDirection3 = 1; // 1: 아래쪽, -1: 위쪽
+    if (OnOff == 1)
+        {        
+        draw_bmp_custom("joat.bmp", obstacleX3_1, obstacleY3_1, 80, 80, 0);
+        draw_bmp_custom("joat.bmp", obstacleX3_2, obstacleY3_2, 80, 80, 0);
+        draw_bmp_custom("joat.bmp", obstacleX3_3, obstacleY3_3, 80, 80, 0);
+        }
+    else if (OnOff == 0)
+        {
+        draw_square(obstacleX3_1+10, obstacleY3_1, 80, 80, 0xFFFFFF, 0);
+        draw_square(obstacleX3_1-10, obstacleY3_1, 80, 80, 0xFFFFFF, 0);
+        draw_square(obstacleX3_2+10, obstacleY3_2, 80, 80, 0xFFFFFF, 0);
+        draw_square(obstacleX3_2-10, obstacleY3_2, 80, 80, 0xFFFFFF, 0);
+        draw_square(obstacleX3_3, obstacleY3_3-10, 80, 80, 0xFFFFFF, 0);
+        draw_square(obstacleX3_3, obstacleY3_3+10, 80, 80, 0xFFFFFF, 0);
+        
+        }
+    else
+        ;
+
+    // 장애물 이동 로직
+    obstacleX3_1 += obstacleDirection1 * 10;
+    obstacleX3_2 += obstacleDirection2 * 10;
+    obstacleY3_3 += obstacleDirection3 * 10;
+
+    // 화면을 벗어나면 방향 전환
+    if (obstacleX3_1 <= 70 || obstacleX3_1 >= 1024 - 150) 
+        obstacleDirection1 *= -1;
+    if(obstacleX3_2 <= 70 || obstacleX3_2 >= 1024 - 150)
+        obstacleDirection2 *= -1;
+    if (obstacleY3_3 <= 150 || obstacleY3_3 >= 600 - 150) 
+        obstacleDirection3 *= -1;
+    
+}
+
 void level_1_background(void)
 {
     
@@ -128,19 +177,29 @@ void level_1_background(void)
     level_1_obstacle(1);
    
 }
+
+void level_2_background(void)
+{
+    draw_background(0x000000, 0);
+    draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
+    draw_square(358, 250, 308, 100, 0x8B4513, 0);
+    level_2_obstacle(1);
+}
+
+void level_3_background(void)
+{
+    draw_background(0x8B4513, 0);
+    draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
+    draw_square(258, 200, 150, 200, 0x8B4513, 0);
+    draw_square(566, 200, 150, 200, 0x8B4513, 0);
+    level_3_obstacle(1);
+}
 void level_1_update(void)
 {
     level_1_obstacle(0); // 장애물 지우기
     usleep(500);    
     level_1_obstacle(1); // 장애물 그리기
           
-}
-void level_2_background(void)
-{
-    draw_background(0x8B4513, 0);
-    draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
-    draw_square(358, 250, 308, 100, 0x8B4513, 0);
-    level_2_obstacle(1);
 }
 void level_2_update(void)
 {
@@ -149,12 +208,12 @@ void level_2_update(void)
     level_2_obstacle(1); // 장애물 그리기
           
 }
-void level_3_background(void)
+void level_3_update(void)
 {
-    draw_background(0x8B4513, 0);
-    draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
-    draw_square(258, 200, 150, 200, 0x8B4513, 0);
-    draw_square(566, 200, 150, 200, 0x8B4513, 0);
+    level_3_obstacle(0); // 장애물 지우기
+    usleep(500);    
+    level_3_obstacle(1); // 장애물 그리기
+          
 }
 
 void level_1_obj_1(int OnOff)
@@ -588,6 +647,35 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
 
                 int Cx = (Ax + 20);
                 int Cy = (Ay + 20);
+                int obstacleLeft3_1 = obstacleX3_1 - 10;
+                int obstacleRight3_1 = obstacleX3_2 + 80;  
+                int obstacleTop3_1 = obstacleY3_1-10;
+                int obstacleBottom3_1 = obstacleY3_1 + 80;  
+                
+                int obstacleLeft3_2 = obstacleX3_2 - 10;
+                int obstacleRight3_2 = obstacleX3_2 + 80;  
+                int obstacleTop3_2 = obstacleY3_2-10;
+                int obstacleBottom3_2 = obstacleY3_2 + 80;
+
+                int obstacleLeft3_3 = obstacleX3_3 - 10;
+                int obstacleRight3_3 = obstacleX3_3 + 80;  
+                int obstacleTop3_3 = obstacleY3_3-10;
+                int obstacleBottom3_3 = obstacleY3_3 + 80;  
+                if (Cx > obstacleLeft3_1 && Cx < obstacleRight3_1 && Cy > obstacleTop3_1 && Cy < obstacleBottom3_1)
+                {
+                    status = FAIL;
+                    flag_safe = 0;
+                }
+                if (Cx > obstacleLeft3_2 && Cx < obstacleRight3_2 && Cy > obstacleTop3_2 && Cy < obstacleBottom3_2)
+                {
+                    status = FAIL;
+                    flag_safe = 0;
+                }
+                if (Cx > obstacleLeft3_3 && Cx < obstacleRight3_3 && Cy > obstacleTop3_3 && Cy < obstacleBottom3_3)
+                {
+                    status = FAIL;
+                    flag_safe = 0;
+                }
 
                 if (orb_count == 3)
                 {
@@ -596,7 +684,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                     level_3_obj_3(OFF);
                     status = WIN;
                     flag_safe = 0;
-           ledOnOff(7, ON);
+                    ledOnOff(7, ON);
                 }
                 else if (orb_count == 2)
                 {
@@ -676,6 +764,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 }
 
                 draw_square(Ax, Ay, 40, 40, 0x000000, 0);
+                level_3_update();
                 usleep(100000);
                 draw_square(Ax, Ay, 40, 40, 0xFFFFFF, 0);
 
