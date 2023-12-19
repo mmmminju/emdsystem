@@ -299,6 +299,14 @@ void level_3_obj_3(int OnOff)
         ;
 }
 
+void *buzzerThread(void *data)
+{   
+    buzzerInit();   
+  //  buzzerPlayLevel1(1);
+    return NULL;
+    pthread_exit(NULL); // 쓰레드 종료
+}
+
 int main(void)
 {
     HW_init();
@@ -406,6 +414,14 @@ int main(void)
             flag_safe = 1;
             orb_count = 0;
             orb_case = 0;
+
+                pthread_t buzzerThreadID;
+                int buzzerThreadResult = pthread_create(&buzzerThreadID, NULL, buzzerThread, NULL);
+                if (buzzerThreadResult != 0)
+                {
+                    perror("Failed to create Buzzer Thread");
+                    return 1;
+                }
 
             level_1_background();
             while (flag_safe)
