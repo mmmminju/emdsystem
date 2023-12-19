@@ -24,7 +24,8 @@
 static int msgID = 0;
 int status = MENU;
 int score;
-
+static int obstacleX=100;
+static int obstacleY=300;
 void *score_timer(void *data)
 {
     while (1)
@@ -60,19 +61,20 @@ int set_Mobility()
         temp = 12;
     return temp;
 }
+
 void level_1_obstacle(int OnOff)
 {
-    static int obstacleX = 200;
-    static int obstacleY = 200;
+    //static int obstacleX = 200;
+    //static int obstacleY = 200;
     static int obstacleDirection = 1; // 1: 오른쪽, -1: 왼쪽
 
     if (OnOff == 1)
-        draw_bmp_custom("flower.bmp", obstacleX, obstacleY, 50, 50, 0);
+        draw_bmp_custom("joat.bmp", obstacleX, obstacleY, 80, 80, 0);
 
     else if (OnOff == 0)
         {
-        draw_square(obstacleX-10, obstacleY, 50, 50, 0xFFFFFF, 0);
-        draw_square(obstacleX+10, obstacleY, 50, 50, 0xFFFFFF, 0);
+        draw_square(obstacleX-10, obstacleY, 80, 80, 0xFFFFFF, 0);
+        draw_square(obstacleX+10, obstacleY, 80, 80, 0xFFFFFF, 0);
         }
     else
         ;
@@ -81,13 +83,17 @@ void level_1_obstacle(int OnOff)
     obstacleX += obstacleDirection * 10;
 
     // 화면을 벗어나면 방향 전환
-    if (obstacleX <= 70 || obstacleX >= 1024 - 120)
+    if (obstacleX <= 70 || obstacleX >= 1024 - 150)
         obstacleDirection *= -1;
 }
+
 void level_1_background(void)
 {
+    
     draw_background(0x8B4513, 0);
     draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
+    
+    level_1_obstacle(1);
    
 }
 void level_1_update(void)
@@ -114,18 +120,22 @@ void level_3_background(void)
 void level_1_obj_1(int OnOff)
 {
     if (OnOff == 1)
-       draw_bmp_custom("trophy.bmp", 340, 220, 50, 50, 0);
-        //draw_square(340, 220, 50, 50, 0xFF0000, 0);
+      draw_bmp_custom("trophy.bmp", 340, 220, 50, 50, 0);
+    //draw_square(340, 220, 50, 50, 0xFF0000, 0);
+       
     else if (OnOff == 0)
+{
         draw_square(340, 220, 50, 50, 0xFFFFFF, 0);
-    else
+} 
+   else
         ;
 }
 
 void level_1_obj_2(int OnOff)
 {
-    if (OnOff == 1)
-        draw_square(730, 400, 50, 50, 0x0000FF, 0);
+    if (OnOff == 1)      
+        draw_bmp_custom("hou.bmp", 730, 400, 50, 50, 0);        
+        //draw_square(730, 400, 50, 50, 0x0000FF, 0);
     else if (OnOff == 0)
         draw_square(730, 400, 50, 50, 0xFFFFFF, 0);
     else
@@ -192,12 +202,6 @@ void level_3_obj_3(int OnOff)
         ;
 }
 
-void *buzzerThread(void *data)
-{
-  //  buzzerPlayLevel1();
-    return NULL;
-}
-
 int main(void)
 {
     HW_init();
@@ -215,7 +219,7 @@ int main(void)
     sprintf(buffer, "Difficulty: %d", mobility);
     pthread_t thread;
     int thread_id;
-
+    
     while (1)
     {
         switch (status)
@@ -315,7 +319,16 @@ int main(void)
 
                 int Cx = (Ax + 20);
                 int Cy = (Ay + 20);
+                int obstacleLeft = obstacleX - 20;
+    int obstacleRight = obstacleX + 70;  // Assuming obstacle width is 50 and adding 10 for some margin
+    int obstacleTop = obstacleY-20;
+    int obstacleBottom = obstacleY + 70;  // Assuming obstacle height is 50
 
+    if (Cx > obstacleLeft && Cx < obstacleRight && Cy > obstacleTop && Cy < obstacleBottom)
+    {
+        status = FAIL;
+        flag_safe = 0;
+    }
                 if (orb_count == 2)
                 {
                     level_1_obj_1(OFF);
@@ -334,14 +347,16 @@ int main(void)
                     level_1_obj_2(ON);
                 }
 
-                if (Cx > 50 && Cx < 1024 - 50 && Cy > 50 && Cy < 600 - 50)
+                if (Cx > 80 && Cx < 1024 - 50 && Cy > 50 && Cy < 600 - 50)
                 {
                 }
+                
                 else
                 {
                     status = FAIL;
                     flag_safe = 0;
                 }
+
 
                 if (orb_count == 0 && Cx > 340 && Cx < 340 + 50 && Cy > 220 && Cy < 220 + 50)
                 {
@@ -353,10 +368,11 @@ int main(void)
                     orb_count = 2;
                     ledOnOff(1, ON);
                 }
-
-                draw_square(Ax, Ay, 40, 40, 0x000000, 0);
+                draw_bmp_custom("goat.bmp", Ax, Ay, 80 , 80, 0);
+                //draw_square(Ax, Ay, 40, 40, 0x000000, 0);
+                     level_1_update(); // 장애물 이동 및 그리기
                 usleep(100000);
-                draw_square(Ax, Ay, 40, 40, 0xFFFFFF, 0);
+                draw_square(Ax, Ay, 80, 80, 0xFFFFFF, 0);
 
                 printf("Coordinate: %d, %d\r\n", Cx, Cy);
             }

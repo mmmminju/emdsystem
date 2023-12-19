@@ -132,6 +132,7 @@ int draw_background(int color, int idx_buffer)
         return -1;
 }
 
+
 int draw_square(int der_x, int der_y, int dX, int dY, int color, int idx_buffer)
 {
     if (idx_buffer == 0)
@@ -162,6 +163,31 @@ int draw_square(int der_x, int der_y, int dX, int dY, int color, int idx_buffer)
         return -1;
 }
 
+int draw_moving_square(int x, int y, int width, int height, int color, int idx_buffer) {
+    int delta = 5;  // 각 반복에서의 위치 변경
+    int steps = 100; // 애니메이션의 단계 수
+    int i;
+
+    for (i = 0; i < steps; i++) {
+        // 이전 위치의 네모를 지우기
+        draw_square(x, y, width, height, 0x000000, idx_buffer);
+
+        // 네모의 위치 업데이트
+        x += delta;
+        y += delta;
+
+        // 새 위치에 네모 그리기
+        draw_square(x, y, width, height, color, idx_buffer);
+
+        // 움직임을 보기 위해 짧은 시간 동안 일시 중지
+        usleep(50000); // 50 밀리초
+    }
+
+    // 네모의 최종 위치를 지우기
+    draw_square(x, y, width, height, 0xffffff, idx_buffer);
+
+    return 0;
+}
 int draw_bmp_menu(void)
 {
     read_bmp("MENU.bmp", &pData, &data, &cols, &rows);
