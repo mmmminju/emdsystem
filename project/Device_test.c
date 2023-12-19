@@ -24,8 +24,12 @@
 static int msgID = 0;
 int status = MENU;
 int score;
-static int obstacleX=100;
+static int obstacleX=700;
 static int obstacleY=300;
+static int obstacleX2_1=750;
+static int obstacleY2_1=100;
+static int obstacleX2_2=250;
+static int obstacleY2_2=300;
 void *score_timer(void *data)
 {
     while (1)
@@ -64,8 +68,7 @@ int set_Mobility()
 
 void level_1_obstacle(int OnOff)
 {
-    //static int obstacleX = 200;
-    //static int obstacleY = 200;
+
     static int obstacleDirection = 1; // 1: 오른쪽, -1: 왼쪽
 
     if (OnOff == 1)
@@ -84,6 +87,34 @@ void level_1_obstacle(int OnOff)
 
     // 화면을 벗어나면 방향 전환
     if (obstacleX <= 70 || obstacleX >= 1024 - 150)
+        obstacleDirection *= -1;
+}
+void level_2_obstacle(int OnOff)
+{
+
+    static int obstacleDirection = 1; // 1: 아래쪽, -1: 위쪽
+
+    if (OnOff == 1)
+{        
+        draw_bmp_custom("joat.bmp", obstacleX2_1, obstacleY2_1, 80, 80, 0);
+        draw_bmp_custom("joat.bmp", obstacleX2_2, obstacleY2_2, 80, 80, 0);
+}
+    else if (OnOff == 0)
+        {
+        draw_square(obstacleX2_1, obstacleY2_1-10, 80, 80, 0xFFFFFF, 0);
+        draw_square(obstacleX2_1, obstacleY2_1+10, 80, 80, 0xFFFFFF, 0);
+        draw_square(obstacleX2_2, obstacleY2_2-10, 80, 80, 0xFFFFFF, 0);
+        draw_square(obstacleX2_2, obstacleY2_2+10, 80, 80, 0xFFFFFF, 0);
+        }
+    else
+        ;
+
+    // 장애물 이동 로직
+    obstacleY2_1 += obstacleDirection * 10;
+    obstacleY2_2 += obstacleDirection * 10;
+
+    // 화면을 벗어나면 방향 전환
+    if (obstacleY2_1 <= 100 || obstacleY2_1 >= 600 - 100 ||obstacleY2_2 <= 100 || obstacleY2_2 >= 600 - 100)
         obstacleDirection *= -1;
 }
 
@@ -108,6 +139,14 @@ void level_2_background(void)
     draw_background(0x8B4513, 0);
     draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
     draw_square(358, 250, 308, 100, 0x8B4513, 0);
+    level_2_obstacle(1);
+}
+void level_2_update(void)
+{
+    level_2_obstacle(0); // 장애물 지우기
+    usleep(5000);    
+    level_2_obstacle(1); // 장애물 그리기
+          
 }
 void level_3_background(void)
 {
@@ -303,8 +342,8 @@ int main(void)
             writeLCD(1, "LEVEL1          ");
             writeLCD(2, buffer);
             printf("LEVEL1\r\n");
-            Ax = 512;
-            Ay = 300;
+            Ax = 200;
+            Ay = 200;
             flag_safe = 1;
             orb_count = 0;
 
@@ -320,15 +359,15 @@ int main(void)
                 int Cx = (Ax + 20);
                 int Cy = (Ay + 20);
                 int obstacleLeft = obstacleX - 20;
-    int obstacleRight = obstacleX + 70;  // Assuming obstacle width is 50 and adding 10 for some margin
-    int obstacleTop = obstacleY-20;
-    int obstacleBottom = obstacleY + 70;  // Assuming obstacle height is 50
+                int obstacleRight = obstacleX + 70;  // Assuming obstacle width is 50 and adding 10 for some margin
+                int obstacleTop = obstacleY-20;
+                int obstacleBottom = obstacleY + 70;  // Assuming obstacle height is 50
 
-    if (Cx > obstacleLeft && Cx < obstacleRight && Cy > obstacleTop && Cy < obstacleBottom)
-    {
-        status = FAIL;
-        flag_safe = 0;
-    }
+                if (Cx > obstacleLeft && Cx < obstacleRight && Cy > obstacleTop && Cy < obstacleBottom)
+                {
+                    status = FAIL;
+                    flag_safe = 0;
+                }
                 if (orb_count == 2)
                 {
                     level_1_obj_1(OFF);
@@ -370,7 +409,7 @@ int main(void)
                 }
                 draw_bmp_custom("goat.bmp", Ax, Ay, 80 , 80, 0);
                 //draw_square(Ax, Ay, 40, 40, 0x000000, 0);
-                     level_1_update(); // 장애물 이동 및 그리기
+                level_1_update(); // 장애물 이동 및 그리기
                 usleep(100000);
                 draw_square(Ax, Ay, 80, 80, 0xFFFFFF, 0);
 
@@ -397,7 +436,26 @@ int main(void)
 
                 int Cx = (Ax + 20);
                 int Cy = (Ay + 20);
+                int obstacleLeft2_1 = obstacleX2_1 - 10;
+                int obstacleRight2_1 = obstacleX2_2 + 60;  
+                int obstacleTop2_1 = obstacleY2_1-10;
+                int obstacleBottom2_1 = obstacleY2_1 + 60;  // Assuming obstacle height is 50
+                
+                int obstacleLeft2_2 = obstacleX2_2 - 10;
+                int obstacleRight2_2 = obstacleX2_2 + 60;  
+                int obstacleTop2_2 = obstacleY2_2-10;
+                int obstacleBottom2_2 = obstacleY2_2 + 60;  // Assuming obstacle height is 50
 
+                if (Cx > obstacleLeft2_1 && Cx < obstacleRight2_1 && Cy > obstacleTop2_1 && Cy < obstacleBottom2_1)
+                {
+                    status = FAIL;
+                    flag_safe = 0;
+                }
+                if (Cx > obstacleLeft2_2 && Cx < obstacleRight2_2 && Cy > obstacleTop2_2 && Cy < obstacleBottom2_2)
+                {
+                    status = FAIL;
+                    flag_safe = 0;
+                }
                 if (orb_count == 5)
                 {
                     level_2_obj_1(OFF);
@@ -455,9 +513,11 @@ int main(void)
                     ledOnOff(4, ON);
                 }
 
-                draw_square(Ax, Ay, 40, 40, 0x000000, 0);
+               draw_bmp_custom("goat.bmp", Ax, Ay, 80 , 80, 0);
+                //draw_square(Ax, Ay, 40, 40, 0x000000, 0);
+                level_2_update(); // 장애물 이동 및 그리기
                 usleep(100000);
-                draw_square(Ax, Ay, 40, 40, 0xFFFFFF, 0);
+                draw_square(Ax, Ay, 80, 80, 0xFFFFFF, 0);
 
                 printf("Coordinate: %d, %d\r\n", Cx, Cy);
             }
