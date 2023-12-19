@@ -1,5 +1,5 @@
 #include <math.h>
-#include <stdlib.h> // for exit
+#include <stdlib.h> // for exit 
 #include <pthread.h>
 #include "./lib/accelMagGyro.h"
 #include "./lib/bitmap.h"
@@ -24,21 +24,22 @@
 static int msgID = 0;
 int status = MENU;
 int score;
-static int obstacleX=700;
-static int obstacleY=300;
+static int obstacleX=700;   //레벨1에서 장애물 X좌표
+static int obstacleY=300;   //레벨1에서 장애물 y좌표
 
-static int obstacleX2_1=750;
-static int obstacleY2_1=100;
-static int obstacleX2_2=250;
-static int obstacleY2_2=300;
+static int obstacleX2_1=750;   //레벨2에서 장애물1 X좌표
+static int obstacleY2_1=100;   //레벨2에서 장애물1 y좌표
+static int obstacleX2_2=250;   //레벨2에서 장애물2 X좌표
+static int obstacleY2_2=300;   //레벨2에서 장애물2 y좌표
 
-static int obstacleX3_1=300;
-static int obstacleY3_1=100;
-static int obstacleX3_2=250;
-static int obstacleY3_2=400;
-static int obstacleX3_3=410;
-static int obstacleY3_3=330;
-void *score_timer(void *data)
+static int obstacleX3_1=300;   //레벨3에서 장애물1 X좌표
+static int obstacleY3_1=100;   //레벨3에서 장애물1 y좌표
+static int obstacleX3_2=250;   //레벨3에서 장애물2 X좌표
+static int obstacleY3_2=400;   //레벨3에서 장애물2 y좌표
+static int obstacleX3_3=410;   //레벨3에서 장애물3 X좌표
+static int obstacleY3_3=330;   //레벨3에서 장애물3 y좌표
+
+void *score_timer(void *data)  //점수 타이머???
 {
     while (1)
     {
@@ -50,7 +51,7 @@ void *score_timer(void *data)
     }
 }
 
-void HW_init()
+void HW_init()   //초기화
 {
     //init_accel();
     //init_gyro();
@@ -59,14 +60,14 @@ void HW_init()
     printf("HW INIT\n");
 }
 
-void HW_close()
+void HW_close()   //끝
 {
     close_accel();
     textLCD_off();
     ledExit();
 }
 
-int set_Mobility()
+int set_Mobility()   //안쓰지않나요?? 온도센서??
 {
     int temp = readTEMP() / 5;
     if (temp > 12)
@@ -74,7 +75,7 @@ int set_Mobility()
     return temp;
 }
 
-void level_1_obstacle(int OnOff)
+void level_1_obstacle(int OnOff)   //레벨1_장애물
 {
 
     static int obstacleDirection = 1; // 1: 오른쪽, -1: 왼쪽
@@ -97,7 +98,7 @@ void level_1_obstacle(int OnOff)
     if (obstacleX <= 70 || obstacleX >= 1024 - 150)
         obstacleDirection *= -1;
 }
-void level_2_obstacle(int OnOff)
+void level_2_obstacle(int OnOff)   //레벨2_장애물
 {
 
     static int obstacleDirection1 = 1; // 1: 아래쪽, -1: 위쪽
@@ -128,7 +129,7 @@ void level_2_obstacle(int OnOff)
         obstacleDirection2 *= -1;
 }
 
-void level_3_obstacle(int OnOff)
+void level_3_obstacle(int OnOff)   //레벨3_장애물
 {
 
     static int obstacleDirection1 = -1; // 1: 오른쪽, -1: 왼쪽
