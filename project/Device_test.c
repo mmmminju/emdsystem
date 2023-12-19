@@ -60,14 +60,43 @@ int set_Mobility()
         temp = 12;
     return temp;
 }
+void level_1_obstacle(int OnOff)
+{
+    static int obstacleX = 200;
+    static int obstacleY = 200;
+    static int obstacleDirection = 1; // 1: 오른쪽, -1: 왼쪽
 
+    if (OnOff == 1)
+        draw_bmp_custom("flower.bmp", obstacleX, obstacleY, 50, 50, 0);
+
+    else if (OnOff == 0)
+        {
+        draw_square(obstacleX-10, obstacleY, 50, 50, 0xFFFFFF, 0);
+        draw_square(obstacleX+10, obstacleY, 50, 50, 0xFFFFFF, 0);
+        }
+    else
+        ;
+
+    // 장애물 이동 로직
+    obstacleX += obstacleDirection * 10;
+
+    // 화면을 벗어나면 방향 전환
+    if (obstacleX <= 70 || obstacleX >= 1024 - 120)
+        obstacleDirection *= -1;
+}
 void level_1_background(void)
 {
     draw_background(0x8B4513, 0);
     draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
    
 }
-
+void level_1_update(void)
+{
+    level_1_obstacle(0); // 장애물 지우기
+    usleep(5000);    
+    level_1_obstacle(1); // 장애물 그리기
+          
+}
 void level_2_background(void)
 {
     draw_background(0x8B4513, 0);
