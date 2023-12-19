@@ -163,31 +163,7 @@ int draw_square(int der_x, int der_y, int dX, int dY, int color, int idx_buffer)
         return -1;
 }
 
-int draw_moving_square(int x, int y, int width, int height, int color, int idx_buffer) {
-    int delta = 5;  // 각 반복에서의 위치 변경
-    int steps = 100; // 애니메이션의 단계 수
-    int i;
 
-    for (i = 0; i < steps; i++) {
-        // 이전 위치의 네모를 지우기
-        draw_square(x, y, width, height, 0x000000, idx_buffer);
-
-        // 네모의 위치 업데이트
-        x += delta;
-        y += delta;
-
-        // 새 위치에 네모 그리기
-        draw_square(x, y, width, height, color, idx_buffer);
-
-        // 움직임을 보기 위해 짧은 시간 동안 일시 중지
-        usleep(50000); // 50 밀리초
-    }
-
-    // 네모의 최종 위치를 지우기
-    draw_square(x, y, width, height, 0xffffff, idx_buffer);
-
-    return 0;
-}
 int draw_bmp_menu(void)
 {
     read_bmp("MENU.bmp", &pData, &data, &cols, &rows);
@@ -285,7 +261,7 @@ int draw_bmp_custom(char *filename, int x, int y, int width, int height, int idx
     int cols, rows;
     unsigned char r, g, b;
     unsigned long pixel;
-    unsigned long bmpdata[1280 * 800];
+    unsigned long bmpdata[1024 * 600];
     int k, t;
     unsigned long *ptr;
 
@@ -331,92 +307,7 @@ int draw_bmp_custom(char *filename, int x, int y, int width, int height, int idx
     return 0;
 }
 
-struct Obstacle {
-    int x;        // 현재 x 좌표
-    int y;        // 현재 y 좌표
-    int width;    // 장애물 너비
-    int height;   // 장애물 높이
-    int motion_range;  // y-좌표의 움직임 범위
-    int steps;    // 움직임의 단계 수
-    char *filename;  // 장애물 BMP 파일 이름
-};
 
-// 장애물 초기화 함수
-void init_obstacle(struct Obstacle *obstacle, int x, int y, int width, int height, int motion_range, int steps, char *filename) {
-    obstacle->x = x;
-    obstacle->y = y;
-    obstacle->width = width;
-    obstacle->height = height;
-    obstacle->motion_range = motion_range;
-    obstacle->steps = steps;
-    obstacle->filename = filename;
-}
-
-// 장애물 그리기 함수
-void draw_obstacle(struct Obstacle *obstacle, int idx_buffer) {
-    int i, j;
-    unsigned char r, g, b;
-    unsigned long pixel;
-    unsigned long bmpdata[1024 * 600];
-    int k, t;
-    unsigned long *ptr;
-
-    // BMP 파일 읽기
-    char *pData, *data;
-    int cols, rows;
-
-    if (read_bmp(obstacle->filename, &pData, &data, &cols, &rows) < 0) {
-        printf("파일 오픈 실패\r\n");
-        return;
-    }
-
-    // 장애물 이동 및 그리기
-    for (i = 0; i < obstacle->steps; i++) {
-        int y = obstacle->y + i * obstacle->motion_range / obstacle->steps;
-
-        // 지정된 위치와 크기에서 BMP 그리기
-        for (j = 0; j < obstacle->height; j++) {
-            for (k = 0; k < obstacle->width; k++) {
-                // 원본 픽셀 위치 계산
-                int src_i = (j * rows / obstacle->height) * cols * 3;
-                int src_j = (k * cols / obstacle->width) * 3;
-
-                // RGB 값 읽기
-                b = *(data + src_i + src_j);
-                g = *(data + src_i + src_j + 1);
-                r = *(data + src_i + src_j + 2);
-
-                // 픽셀 값 생성
-                pixel = ((r << 16) | (g << 8) | b);
-
-                // 지정된 버퍼 인덱스에 따라 프레임버퍼 포인터 결정
-                if (idx_buffer == 0) {
-                    ptr = (unsigned long *)fb_mapped0 + (y + j) * screen_width + (obstacle->x + k);
-                } else if (idx_buffer == 1) {
-                    ptr = (unsigned long *)fb_mapped1 + (y + j) * screen_width + (obstacle->x + k);
-                } else {
-                    printf("잘못된 버퍼 인덱스\r\n");
-                    return;
-                }
-
-                // 프레임버퍼에 픽셀 쓰기
-                *ptr = pixel;
-            }
-        }
-
-        // 움직임을 시각화하기 위한 짧은 지연
-        usleep(5000);  // 50 밀리초
-    }
-
-    // BMP 파일 닫기
-    close_bmp(&pData);
-}
-
-// 장애물 이동 함수
-void move_obstacle(struct Obstacle *obstacle, int new_x, int new_y) {
-    obstacle->x = new_x;
-    obstacle->y = new_y;
-}
 int display_close(void)
 {
     munmap(fb_mapped0, mem_size);
