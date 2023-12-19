@@ -274,7 +274,7 @@ void level_3_obj_1(int OnOff)
     if (OnOff == 1)
         draw_bmp_custom("champs.bmp", 870, 250, 50, 50, 0);
     else if (OnOff == 0)
-        draw_square(870, 400, 50, 50, 0xFFFFFF, 0);
+        draw_square(870, 250, 50, 50, 0xFFFFFF, 0);
     else
         ;
 }
@@ -604,7 +604,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
             else if (orb_count == 2)
                 orb_count = 3;
         }
-        if (level2_orb3_trigger == 0 && Cx > 440-10 && Cx < 440 + 80 && Cy > 450-10 && Cy < 450 + 80)
+        if (level2_orb3_trigger == 0 && Cx > 440-20 && Cx < 440 + 90 && Cy > 450-20 && Cy < 450 + 90)
         {
             level2_orb3_trigger = 1;
             if (orb_count == 0)
