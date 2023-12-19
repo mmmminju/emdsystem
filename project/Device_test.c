@@ -252,13 +252,14 @@ int main(void)
     int flag_safe = 1;
     int flag_display_score = 0;
     int orb_count = 0;
+    int orb_case = 0;
     int Ax;
     int Ay;
     char buffer[17];
     sprintf(buffer, "Difficulty: %d", mobility);
     pthread_t thread;
     int thread_id;
-    
+
     while (1)
     {
         switch (status)
@@ -346,6 +347,7 @@ int main(void)
             Ay = 200;
             flag_safe = 1;
             orb_count = 0;
+            orb_case = 0;
 
             level_1_background();
             while (flag_safe)
@@ -362,7 +364,6 @@ int main(void)
                 int obstacleRight = obstacleX + 70;  // Assuming obstacle width is 50 and adding 10 for some margin
                 int obstacleTop = obstacleY-20;
                 int obstacleBottom = obstacleY + 70;  // Assuming obstacle height is 50
-
                 if (Cx > obstacleLeft && Cx < obstacleRight && Cy > obstacleTop && Cy < obstacleBottom)
                 {
                     status = FAIL;
@@ -375,38 +376,54 @@ int main(void)
                     status = LEVEL2;
                     flag_safe = 0;
                 }
-                else if (orb_count == 1)
+                else if (orb_count == 1 && orb_case == 1)
                 {
                     level_1_obj_1(OFF);
                     level_1_obj_2(ON);
                 }
-                else
+                else if (orb_count == 1 && orb_case == 2)
+                {
+                    level_1_obj_1(ON);
+                    level_1_obj_2(OFF);
+                }
+                else if (orb_count ==0)
                 {
                     level_1_obj_1(ON);
                     level_1_obj_2(ON);
                 }
 
-                if (Cx > 80 && Cx < 1024 - 50 && Cy > 50 && Cy < 600 - 50)
+                if (Cx > 50 && Cx < 1024 - 50 && Cy > 50 && Cy < 600 - 50)
                 {
                 }
-                
                 else
                 {
                     status = FAIL;
                     flag_safe = 0;
                 }
 
-
                 if (orb_count == 0 && Cx > 340 && Cx < 340 + 50 && Cy > 220 && Cy < 220 + 50)
                 {
                     orb_count = 1;
+                    orb_case = 1;
                     ledOnOff(0, ON);
                 }
-                if (orb_count == 1 && Cx > 730 && Cx < 730 + 50 && Cy > 400 && Cy < 400 + 50)
+                if (orb_count == 0 && Cx > 730 && Cx < 730 + 50 && Cy > 400 && Cy < 400 + 50)
+                {
+                    orb_count = 1;
+                    orb_case = 2;
+                    ledOnOff(0, ON);
+                }
+                if (orb_count == 1 && Cx > 340 && Cx < 340 + 50 && Cy > 220 && Cy < 220 + 50 && orb_case ==2)
                 {
                     orb_count = 2;
                     ledOnOff(1, ON);
                 }
+                if (orb_count == 1 && Cx > 730 && Cx < 730 + 50 && Cy > 400 && Cy < 400 + 50 && orb_case ==1)
+                {
+                    orb_count = 2;
+                    ledOnOff(1, ON);
+                }
+
                 draw_bmp_custom("goat.bmp", Ax, Ay, 80 , 80, 0);
                 //draw_square(Ax, Ay, 40, 40, 0x000000, 0);
                 level_1_update(); // 장애물 이동 및 그리기
@@ -417,25 +434,28 @@ int main(void)
             }
             break;
 
-        case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
-            writeLCD(1, "LEVEL2          ");
-            writeLCD(2, buffer);
-            printf("LEVEL2\r\n");
-            Ax = 100;
-            Ay = 100;
-            flag_safe = 1;
+case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
+    writeLCD(1, "LEVEL2          ");
+    writeLCD(2, buffer);
+    printf("LEVEL2\r\n");
+    Ax = 100;
+    Ay = 100;
+    flag_safe = 1;
+    int level2_orb1_trigger = 0, level2_orb2_trigger = 0, level2_orb3_trigger = 0;
+    int orb_count = 0;
+    level_2_background();
 
-            level_2_background();
-            while (flag_safe)
-            {
-                init_accel();
-                double ax = read_accel(Y) / 163;
-                double ay = read_accel(X) / 163;
-                Ax = Ax + (ax * mobility);
-                Ay = Ay + (ay * mobility);
+    while (flag_safe)
+    {
+        init_accel();
+        double ax = read_accel(Y) / 163;
+        double ay = read_accel(X) / 163;
+        Ax = Ax + (ax * mobility);
+        Ay = Ay + (ay * mobility);
 
-                int Cx = (Ax + 20);
-                int Cy = (Ay + 20);
+        int Cx = (Ax + 20);
+        int Cy = (Ay + 20);
+
                 int obstacleLeft2_1 = obstacleX2_1 - 10;
                 int obstacleRight2_1 = obstacleX2_2 + 60;  
                 int obstacleTop2_1 = obstacleY2_1-10;
@@ -445,7 +465,6 @@ int main(void)
                 int obstacleRight2_2 = obstacleX2_2 + 60;  
                 int obstacleTop2_2 = obstacleY2_2-10;
                 int obstacleBottom2_2 = obstacleY2_2 + 60;  // Assuming obstacle height is 50
-
                 if (Cx > obstacleLeft2_1 && Cx < obstacleRight2_1 && Cy > obstacleTop2_1 && Cy < obstacleBottom2_1)
                 {
                     status = FAIL;
@@ -456,62 +475,86 @@ int main(void)
                     status = FAIL;
                     flag_safe = 0;
                 }
-                if (orb_count == 5)
-                {
-                    level_2_obj_1(OFF);
-                    level_2_obj_2(OFF);
-                    level_2_obj_3(OFF);
-                    status = LEVEL3;
-                    flag_safe = 0;
-                }
-                else if (orb_count == 4)
-                {
-                    level_2_obj_1(OFF);
-                    level_2_obj_2(OFF);
-                    level_2_obj_3(ON);
-                }
-                else if (orb_count == 3)
-                {
-                    level_2_obj_1(OFF);
-                    level_2_obj_2(ON);
-                    level_2_obj_3(ON);
-                }
-                else
-                {
-                    level_2_obj_1(ON);
-                    level_2_obj_2(ON);
-                    level_2_obj_3(ON);
-                }
+        if (orb_count == 3)
+        {
+            level_2_obj_1(OFF);
+            level_2_obj_2(OFF);
+            level_2_obj_3(OFF);
+            status = LEVEL3;
+            flag_safe = 0;
+            ledOnOff(4, ON);
+        }
+        else if (orb_count == 2)
+        {
+            if (level2_orb1_trigger == 1)
+                level_2_obj_1(OFF);
+            else if (level2_orb2_trigger == 1)
+                level_2_obj_2(OFF);
+            else if (level2_orb3_trigger == 1)
+                level_2_obj_3(OFF);
+            ledOnOff(3, ON);        
+}
+        else if (orb_count == 1)
+        {
+            if (level2_orb1_trigger == 1)
+                level_2_obj_1(OFF);
+            else if (level2_orb2_trigger == 1)
+                level_2_obj_2(OFF);
+            else if (level2_orb3_trigger == 1)
+                level_2_obj_3(OFF);
+            ledOnOff(2, ON);
+        }
+        else if (orb_count == 0)
+        {
+            level_2_obj_1(ON);
+            level_2_obj_2(ON);
+            level_2_obj_3(ON);
+        }
 
-                if (Cx > 50 && Cx < 1024 - 50 && Cy > 50 && Cy < 600 - 50)
-                {
-                    if (Cx > 358 && Cx < 358 + 308 && Cy > 250 && Cy < 250 + 100)
-                    {
-                        status = FAIL;
-                        flag_safe = 0;
-                    }
-                }
-                else
-                {
-                    status = FAIL;
-                    flag_safe = 0;
-                }
+        if (Cx > 50 && Cx < 1024 - 50 && Cy > 50 && Cy < 600 - 50)
+        {
+            if (Cx > 358 && Cx < 358 + 308 && Cy > 250 && Cy < 250 + 100)
+            {
+                status = FAIL;
+                flag_safe = 0;
+            }
+        }
+        else
+        {
+            status = FAIL;
+            flag_safe = 0;
+        }
 
-                if (orb_count == 2 && Cx > 850 && Cx < 850 + 50 && Cy > 400 && Cy < 400 + 50)
-                {
-                    orb_count = 3;
-                    ledOnOff(2, ON);
-                }
-                if (orb_count == 3 && Cx > 900 && Cx < 900 + 50 && Cy > 100 && Cy < 100 + 50)
-                {
-                    orb_count = 4;
-                    ledOnOff(3, ON);
-                }
-                if (orb_count == 4 && Cx > 440 && Cx < 440 + 50 && Cy > 450 && Cy < 450 + 50)
-                {
-                    orb_count = 5;
-                    ledOnOff(4, ON);
-                }
+        if (level2_orb1_trigger == 0 && Cx > 850 && Cx < 850 + 50 && Cy > 400 && Cy < 400 + 50)
+        {
+            level2_orb1_trigger = 1;
+            if (orb_count == 0)
+                orb_count = 1;
+            else if (orb_count == 1)
+                orb_count = 2;
+            else if (orb_count == 2)
+                orb_count = 3;
+        }
+        if (level2_orb2_trigger == 0 && Cx > 900 && Cx < 900 + 50 && Cy > 100 && Cy < 100 + 50)
+        {
+            level2_orb2_trigger = 1;
+            if (orb_count == 0)
+                orb_count = 1;
+            else if (orb_count == 1)
+                orb_count = 2;
+            else if (orb_count == 2)
+                orb_count = 3;
+        }
+        if (level2_orb3_trigger == 0 && Cx > 440 && Cx < 440 + 50 && Cy > 450 && Cy < 450 + 50)
+        {
+            level2_orb3_trigger = 1;
+            if (orb_count == 0)
+                orb_count = 1;
+            else if (orb_count == 1)
+                orb_count = 2;
+            else if (orb_count == 2)
+                orb_count = 3;
+        }
 
                draw_bmp_custom("goat.bmp", Ax, Ay, 80 , 80, 0);
                 //draw_square(Ax, Ay, 40, 40, 0x000000, 0);
@@ -521,16 +564,17 @@ int main(void)
 
                 printf("Coordinate: %d, %d\r\n", Cx, Cy);
             }
-            break;
+    break;
 
-        case LEVEL3: // 레벨 3 : R > G > B 순서로 터치
+       case LEVEL3: // 레벨 3 : R > G > B 순서로 터치
             writeLCD(1, "LEVEL3          ");
             writeLCD(2, buffer);
             printf("LEVEL3\r\n");
             Ax = 100;
             Ay = 100;
             flag_safe = 1;
-
+    	     int level3_orb1_trigger = 0, level3_orb2_trigger = 0, level3_orb3_trigger = 0;
+   	        orb_count = 0;
             level_3_background();
             while (flag_safe)
             {
@@ -543,27 +587,36 @@ int main(void)
                 int Cx = (Ax + 20);
                 int Cy = (Ay + 20);
 
-                if (orb_count == 8)
+                if (orb_count == 3)
                 {
                     level_3_obj_1(OFF);
                     level_3_obj_2(OFF);
                     level_3_obj_3(OFF);
                     status = WIN;
                     flag_safe = 0;
+           ledOnOff(7, ON);
                 }
-                else if (orb_count == 7)
+                else if (orb_count == 2)
                 {
-                    level_3_obj_1(OFF);
-                    level_3_obj_2(OFF);
-                    level_3_obj_3(ON);
+            if (level3_orb1_trigger == 1)
+                level_2_obj_1(OFF);
+            else if (level3_orb2_trigger == 1)
+                level_2_obj_2(OFF);
+            else if (level3_orb3_trigger == 1)
+                level_2_obj_3(OFF);
+           ledOnOff(6, ON);
                 }
-                else if (orb_count == 6)
+                else if (orb_count == 1)
                 {
-                    level_3_obj_1(OFF);
-                    level_3_obj_2(ON);
-                    level_3_obj_3(ON);
+            if (level3_orb1_trigger == 1)
+                level_2_obj_1(OFF);
+            else if (level3_orb2_trigger == 1)
+                level_2_obj_2(OFF);
+            else if (level3_orb3_trigger == 1)
+                level_2_obj_3(OFF);
+           ledOnOff(5, ON);
                 }
-                else
+                else if (orb_count == 0)
                 {
                     level_3_obj_1(ON);
                     level_3_obj_2(ON);
@@ -589,20 +642,35 @@ int main(void)
                     flag_safe = 0;
                 }
 
-                if (orb_count == 5 && Cx > 870 && Cx < 870 + 50 && Cy > 500 && Cy < 500 + 50)
+                if (level3_orb1_trigger == 0 && Cx > 870 && Cx < 870 + 50 && Cy > 500 && Cy < 500 + 50)
                 {
-                    orb_count = 6;
-                    ledOnOff(5, ON);
+            level3_orb1_trigger = 1;
+            if (orb_count == 0)
+                orb_count = 1;
+            else if (orb_count == 1)
+                orb_count = 2;
+            else if (orb_count == 2)
+                orb_count = 3;
                 }
-                if (orb_count == 6 && Cx > 120 && Cx < 120 + 50 && Cy > 120 && Cy < 120 + 50)
+                if (level3_orb2_trigger == 0 && Cx > 120 && Cx < 120 + 50 && Cy > 120 && Cy < 120 + 50)
                 {
-                    orb_count = 7;
-                    ledOnOff(6, ON);
+            level3_orb2_trigger = 1;
+            if (orb_count == 0)
+                orb_count = 1;
+            else if (orb_count == 1)
+                orb_count = 2;
+            else if (orb_count == 2)
+                orb_count = 3;
                 }
-                if (orb_count == 7 && Cx > 512 && Cx < 512 + 50 && Cy > 300 && Cy < 300 + 50)
+                if (level3_orb3_trigger == 0 && Cx > 512 && Cx < 512 + 50 && Cy > 300 && Cy < 300 + 50)
                 {
-                    orb_count = 8;
-                    ledOnOff(7, ON);
+            level3_orb3_trigger = 1;
+            if (orb_count == 0)
+                orb_count = 1;
+            else if (orb_count == 1)
+                orb_count = 2;
+            else if (orb_count == 2)
+                orb_count = 3;
                 }
 
                 draw_square(Ax, Ay, 40, 40, 0x000000, 0);
@@ -612,6 +680,7 @@ int main(void)
                 printf("Coordinate: %d, %d\r\n", Cx, Cy);
             }
             break;
+
 
         case FAIL: // 실패할 경우 처음부터 시작하거나 게임 종료
             writeLCD(2, "Failed          ");
