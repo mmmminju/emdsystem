@@ -464,12 +464,9 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 int obstacleLeft2_2 = obstacleX2_2 - 10;
                 int obstacleRight2_2 = obstacleX2_2 + 80;  
                 int obstacleTop2_2 = obstacleY2_2-10;
-<<<<<<< HEAD
-                int obstacleBottom2_2 = obstacleY2_2 + 60;  // Assuming obstacle height is 50
-=======
                 int obstacleBottom2_2 = obstacleY2_2 + 80;
 
->>>>>>> 229da1eedac0439b801ab8320013591e3d434abc
+
                 if (Cx > obstacleLeft2_1 && Cx < obstacleRight2_1 && Cy > obstacleTop2_1 && Cy < obstacleBottom2_1)
                 {
                     status = FAIL;
