@@ -42,10 +42,10 @@ void *score_timer(void *data)
 {
     while (1)
     {
-        if (score < 0)
-            score = 0;
+        if (score == 0)
+        fndDisp(0, 0);
         fndDisp(score, 0);
-        usleep(50);
+        usleep(1000000);
         score--;
     }
 }
@@ -403,7 +403,7 @@ int main(void)
 
         case LEVEL1: // 레벨 1 : 오브 2개, R>B 순서로 터치
 
-            score = 999999;
+            score = 90;
             thread_id = pthread_create(&thread, NULL, score_timer, NULL); // 점수 계산 타이머 시작
 
             writeLCD(1, "LEVEL1          ");
@@ -438,7 +438,13 @@ int main(void)
                 int obstacleRight = obstacleX + 70;  // Assuming obstacle width is 50 and adding 10 for some margin
                 int obstacleTop = obstacleY-20;
                 int obstacleBottom = obstacleY + 70;  // Assuming obstacle height is 50
-                if (Cx > obstacleLeft && Cx < obstacleRight && Cy > obstacleTop && Cy < obstacleBottom)
+               
+                if(score==0)
+                {
+                    status = FAIL;
+                    flag_safe = 0;
+                }
+                 if (Cx > obstacleLeft && Cx < obstacleRight && Cy > obstacleTop && Cy < obstacleBottom)
                 {
                     status = FAIL;
                     flag_safe = 0;
@@ -539,7 +545,11 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 int obstacleTop2_2 = obstacleY2_2-10;
                 int obstacleBottom2_2 = obstacleY2_2 + 80;
 
-
+                if(score==0)
+                {
+                    status = FAIL;
+                    flag_safe = 0;
+                }
                 if (Cx > obstacleLeft2_1 && Cx < obstacleRight2_1 && Cy > obstacleTop2_1 && Cy < obstacleBottom2_1)
                 {
                     status = FAIL;
@@ -673,7 +683,12 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 int obstacleLeft3_3 = obstacleX3_3 - 10;
                 int obstacleRight3_3 = obstacleX3_3 + 80;  
                 int obstacleTop3_3 = obstacleY3_3-10;
-                int obstacleBottom3_3 = obstacleY3_3 + 80;  
+                int obstacleBottom3_3 = obstacleY3_3 + 80;
+                if(score==0)
+                {
+                    status = FAIL;
+                    flag_safe = 0;
+                }  
                 if (Cx > obstacleLeft3_1 && Cx < obstacleRight3_1 && Cy > obstacleTop3_1 && Cy < obstacleBottom3_1)
                 {
                     status = FAIL;
