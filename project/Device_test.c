@@ -92,8 +92,8 @@ void level_1_obstacle(int OnOff)
 void level_2_obstacle(int OnOff)
 {
 
-    static int obstacleDirection = 1; // 1: 아래쪽, -1: 위쪽
-
+    static int obstacleDirection1 = 1; // 1: 아래쪽, -1: 위쪽
+    static int obstacleDirection2 = 1; // 1: 아래쪽, -1: 위쪽
     if (OnOff == 1)
 {        
         draw_bmp_custom("joat.bmp", obstacleX2_1, obstacleY2_1, 80, 80, 0);
@@ -110,14 +110,15 @@ void level_2_obstacle(int OnOff)
         ;
 
     // 장애물 이동 로직
-    obstacleY2_1 += obstacleDirection * 10;
-    obstacleY2_2 += obstacleDirection * 10;
+    obstacleY2_1 += obstacleDirection1 * 10;
+    obstacleY2_2 += obstacleDirection2 * 10;
 
     // 화면을 벗어나면 방향 전환
-    if (obstacleY2_1 <= 100 || obstacleY2_1 >= 600 - 100 ||obstacleY2_2 <= 100 || obstacleY2_2 >= 600 - 100)
-        obstacleDirection *= -1;
+    if (obstacleY2_1 <= 100 || obstacleY2_1 >= 600 - 150) 
+        obstacleDirection1 *= -1;
+    if(obstacleY2_2 <= 100 || obstacleY2_2 >= 600 - 150)
+        obstacleDirection2 *= -1;
 }
-
 void level_1_background(void)
 {
     
@@ -130,7 +131,7 @@ void level_1_background(void)
 void level_1_update(void)
 {
     level_1_obstacle(0); // 장애물 지우기
-    usleep(5000);    
+    usleep(500);    
     level_1_obstacle(1); // 장애물 그리기
           
 }
@@ -144,7 +145,7 @@ void level_2_background(void)
 void level_2_update(void)
 {
     level_2_obstacle(0); // 장애물 지우기
-    usleep(5000);    
+    usleep(500);    
     level_2_obstacle(1); // 장애물 그리기
           
 }
@@ -408,7 +409,6 @@ int main(void)
                     ledOnOff(1, ON);
                 }
                 draw_bmp_custom("goat.bmp", Ax, Ay, 80 , 80, 0);
-                //draw_square(Ax, Ay, 40, 40, 0x000000, 0);
                 level_1_update(); // 장애물 이동 및 그리기
                 usleep(100000);
                 draw_square(Ax, Ay, 80, 80, 0xFFFFFF, 0);
@@ -437,14 +437,14 @@ int main(void)
                 int Cx = (Ax + 20);
                 int Cy = (Ay + 20);
                 int obstacleLeft2_1 = obstacleX2_1 - 10;
-                int obstacleRight2_1 = obstacleX2_2 + 60;  
+                int obstacleRight2_1 = obstacleX2_2 + 80;  
                 int obstacleTop2_1 = obstacleY2_1-10;
-                int obstacleBottom2_1 = obstacleY2_1 + 60;  // Assuming obstacle height is 50
+                int obstacleBottom2_1 = obstacleY2_1 + 80;  
                 
                 int obstacleLeft2_2 = obstacleX2_2 - 10;
-                int obstacleRight2_2 = obstacleX2_2 + 60;  
+                int obstacleRight2_2 = obstacleX2_2 + 80;  
                 int obstacleTop2_2 = obstacleY2_2-10;
-                int obstacleBottom2_2 = obstacleY2_2 + 60;  // Assuming obstacle height is 50
+                int obstacleBottom2_2 = obstacleY2_2 + 80;
 
                 if (Cx > obstacleLeft2_1 && Cx < obstacleRight2_1 && Cy > obstacleTop2_1 && Cy < obstacleBottom2_1)
                 {
