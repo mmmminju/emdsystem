@@ -187,7 +187,8 @@ void level_3_background(void)
     draw_bmp_custom("pitch.bmp" ,0,0,1024,600,0);    
     //draw_square(258, 200, 150, 200, 0x000000, 0);
     draw_bmp_custom("luck.bmp" ,255,200,150,200,0);
-    draw_square(566, 200, 150, 200, 0x000000, 0);
+    //draw_square(566, 200, 150, 200, 0x000000, 0);
+    draw_bmp_custom("red.bmp" ,560,200,150,200,0); 
     level_3_obstacle(1);
 }
 void level_1_update(void)
@@ -798,7 +799,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                         status = FAIL;
                         flag_safe = 0;
                     }
-                    else if (Cx > 566 && Cx < 566 + 150 && Cy > 200 && Cy < 200 + 200)
+                    else if (Cx > 540 && Cx < 730 && Cy > 180 && Cy < 420)
                     {
                         status = FAIL;
                         flag_safe = 0;
