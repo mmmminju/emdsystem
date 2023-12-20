@@ -191,6 +191,8 @@ void level_3_background(void)
     //draw_background(0x000000, 0);
     //draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
     draw_bmp_custom("pitch.bmp" ,0,0,1024,600,0);    
+    //draw_square(258, 200, 150, 200, 0x000000, 0);
+    draw_bmp_custom("luck.bmp" ,255,200,150,200,0);
     draw_square(566, 200, 150, 200, 0x000000, 0);
     level_3_obstacle(1);
 }
