@@ -43,10 +43,10 @@ void *score_timer(void *data)  //점수 타이머???
 {
     while (1)
     {
-        if (score < 0)
-            score = 0;
+        if (score == 0)
+        fndDisp(0, 0);
         fndDisp(score, 0);
-        usleep(50);
+        usleep(1000000);
         score--;
     }
 }
@@ -67,13 +67,15 @@ void HW_close()   //끝
     ledExit();
 }
 
-int set_Mobility()   //안쓰지않나요?? 온도센서??
+/*
+int set_Mobility()   //온도센서 안 씀. 
 {
     int temp = readTEMP() / 5;
     if (temp > 12)
         temp = 12;
     return temp;
 }
+*/
 
 void level_1_obstacle(int OnOff)   //레벨1_장애물
 {
@@ -169,7 +171,7 @@ void level_3_obstacle(int OnOff)   //레벨3_장애물
     
 }
 
-void level_1_background(void)
+void level_1_background(void)   //레벨1 배경
 {
     
     draw_background(0x000000, 0);
@@ -179,7 +181,7 @@ void level_1_background(void)
    
 }
 
-void level_2_background(void)
+void level_2_background(void)    //레벨2 배경
 {
     draw_background(0x000000, 0);
     draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
@@ -187,7 +189,7 @@ void level_2_background(void)
     level_2_obstacle(1);
 }
 
-void level_3_background(void)
+void level_3_background(void)    //레벨3 배경
 {
     draw_background(0x000000, 0);
     draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
@@ -195,51 +197,51 @@ void level_3_background(void)
     draw_square(566, 200, 150, 200, 0x000000, 0);
     level_3_obstacle(1);
 }
-void level_1_update(void)
+void level_1_update(void)    //레벨1_장애물 
 {
     level_1_obstacle(0); // 장애물 지우기
     usleep(500);    
     level_1_obstacle(1); // 장애물 그리기
           
 }
-void level_2_update(void)
+void level_2_update(void)    //레벨2_장애물
 {
     level_2_obstacle(0); // 장애물 지우기
     usleep(500);    
     level_2_obstacle(1); // 장애물 그리기
           
 }
-void level_3_update(void)
+void level_3_update(void)    //레벨3_장애물
 {
     level_3_obstacle(0); // 장애물 지우기
     usleep(500);    
     level_3_obstacle(1); // 장애물 그리기
           
 }
-
+///////////////////////////////////////////레벨1 장애물 그리기//////////////////////////////////////////
 void level_1_obj_1(int OnOff)
 {
     if (OnOff == 1)
-      draw_bmp_custom("trophy.bmp", 340, 220, 50, 50, 0);
+      draw_bmp_custom("trophy.bmp", 340, 220, 50, 50, 0);   //onoff가 '1'일 경우, "trophy.bmp"이미지를 (x,y)좌표=(340,220)으로 설정하고, 사진의 크기를 50x50인 영역에 그린다. 
        
     else if (OnOff == 0)
 {
-        draw_square(340, 220, 50, 50, 0xFFFFFF, 0);
+        draw_square(340, 220, 50, 50, 0xFFFFFF, 0);    //OnOff가 0일 경우, (x, y) 좌표가 (340, 220)이고 크기가 50x50인 흰색 정사각형을 그린다.
 } 
    else
-        ;
+        ;                                            //그 외의 경우는 아무 동작도 수행하지 않는다. 
 }
 
 void level_1_obj_2(int OnOff)
 {
     if (OnOff == 1)      
-        draw_bmp_custom("champs.bmp", 730, 400, 50, 50, 0);        
+        draw_bmp_custom("champs.bmp", 730, 400, 50, 50, 0);        //같은 원리.
     else if (OnOff == 0)
         draw_square(730, 400, 50, 50, 0xFFFFFF, 0);
     else
         ;
 }
-
+////////////////////////////////////////////레벨2 장애물 그리기////////////////////////////////////////////
 void level_2_obj_1(int OnOff)
 {
     if (OnOff == 1)
@@ -269,7 +271,7 @@ void level_2_obj_3(int OnOff)
     else
         ;
 }
-
+///////////////////////////////////레벨3 장애물 그리기/////////////////////////////////////////////
 void level_3_obj_1(int OnOff)
 {
     if (OnOff == 1)
@@ -299,7 +301,7 @@ void level_3_obj_3(int OnOff)
     else
         ;
 }
-
+////////////////////////////////////////메인 함수 ///////////////////////////////////////////////////////////////////////////
 int main(void)
 {
     HW_init();
@@ -342,18 +344,18 @@ int main(void)
             }
             switch (messageRxData.keyInput)
             {
-            case KEY_HOME: // 정상 게임 모드
+            case KEY_HOME: // 정상 게임 모드    // //KEY[home] --> Level 1
                 printf("Home key\r\n");
                 printf("PLAY key\r\n");
                 status = LEVEL1;
                 break;
-            case KEY_BACK: // 디버그 게임 모드
+            case KEY_BACK: // 디버그 게임 모드   //KEY[back] --> Level 1
                 printf("Back key\r\n");
                 printf("PLAY key\r\n");
                 mobility = 1;
                 status = LEVEL1;
                 break;
-            case KEY_VOLUMEDOWN: // 게임 종료
+            case KEY_VOLUMEDOWN: // 게임 종료     //KEY[Vol.DN] --> 종료
                 printf("Volume down key\r\n");
                 printf("PWR OFF\r\n");
                 status = EXIT;
