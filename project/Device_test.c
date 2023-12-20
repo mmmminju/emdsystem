@@ -406,7 +406,7 @@ int main(void)
             {
                 status = MENU;
             }
-            else if (messageRxData.keyInput == KEY_VOLUMEDOWN)
+            else if (messageRxData.keyInput == KEY_MENU)
             {
                 status = EXIT;
             }
@@ -863,7 +863,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
             {
                 status = MENU;
             }
-            else if (messageRxData.keyInput == KEY_VOLUMEDOWN)
+            else if (messageRxData.keyInput == KEY_MENU)
             {
                 status = EXIT;
             }
