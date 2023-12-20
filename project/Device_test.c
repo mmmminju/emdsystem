@@ -8,7 +8,6 @@
 #include "./lib/colorLED.h"
 #include "./lib/fnd.h"
 #include "./lib/led.h"
-#include "./lib/temp.h"
 #include "./lib/textLCD.h"
 #include "./lib/display.h"
 
@@ -48,14 +47,6 @@ void *score_timer(void *data)
         usleep(1000000);
         score--;
     }
-}
-
-int set_Mobility()
-{
-    int temp = readTEMP() / 5;
-    if (temp > 12)
-        temp = 12;
-    return temp;
 }
 
 
@@ -319,7 +310,7 @@ int main(void)
 {
     HW_init();
     display_init();
-    int mobility = set_Mobility();
+    int mobility = 5;//set_Mobility();
     msgID = buttonInit();
     int returnValue = 0;
     BUTTON_MSG_T messageRxData;
@@ -343,7 +334,7 @@ int main(void)
             draw_bmp_menu();
             printf("Press Key\r\n");
             writeLCD(1, "Game Menu       ");
-            writeLCD(2, "                ");
+            //writeLCD(2, "                ");
             for (int i = 0; i < 8; i++)
             {
                 ledOnOff(i, OFF);
@@ -360,6 +351,7 @@ int main(void)
             case KEY_HOME: // 정상 게임 모드
                 printf("Home key\r\n");
                 printf("PLAY key\r\n");
+            writeLCD(2,buffer);
                 status = LEVEL1;
                 break;
             case KEY_BACK: // 디버그 게임 모드
@@ -368,10 +360,28 @@ int main(void)
                 mobility = 1;
                 status = LEVEL1;
                 break;
-            case KEY_VOLUMEDOWN: // 게임 종료
-                printf("Volume down key\r\n");
+            case KEY_MENU: // 게임 종료
+                printf("MENU key\r\n");
                 printf("PWR OFF\r\n");
                 status = EXIT;
+                break;
+            case KEY_VOLUMEUP: 
+    sprintf(buffer, "mobility: %d", mobility);
+                printf("Volume Up key\r\n");
+                printf("Mobility Up\r\n");
+                mobility= mobility+1;
+                  if(mobility >= 10) mobility = 10;
+                writeLCD(2,buffer);
+                status = MENU;
+                break;
+            case KEY_VOLUMEDOWN: 
+    sprintf(buffer, "mobility: %d", mobility);
+                printf("Volume down key\r\n");
+                printf("Mobility OFF\r\n");
+                mobility= mobility-1;
+                  if(mobility <= 1) mobility = 1;
+                    writeLCD(2,buffer);
+                status = MENU;
                 break;
             default: // 잘못된 키 입력
                 printf("KEY INPUT ERROR \r\n");
@@ -440,8 +450,8 @@ int main(void)
                 Ax = Ax + (ax * mobility);
                 Ay = Ay + (ay * mobility);
 
-                int Cx = (Ax + 70);
-                int Cy = (Ay + 70);
+                int Cx = (Ax + 35);
+                int Cy = (Ay + 35);
                 int obstacleLeft = obstacleX ;
                 int obstacleRight = obstacleX + 65;  // 
                 int obstacleTop = obstacleY;
@@ -682,8 +692,8 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
             Ax = 100;
             Ay = 300;
             flag_safe = 1;
-    	     int level3_orb1_trigger = 0, level3_orb2_trigger = 0, level3_orb3_trigger = 0;
-   	        orb_count = 0;
+            int level3_orb1_trigger = 0, level3_orb2_trigger = 0, level3_orb3_trigger = 0;
+              orb_count = 0;
             fnd_count = 0; 
             level_3_background();
             while (flag_safe)
@@ -837,10 +847,11 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
 
 
         case FAIL: // 실패할 경우 처음부터 시작하거나 게임 종료
-            writeLCD(2, "Failed          ");
+            writeLCD(1, "Failed          ");
+            writeLCD(2, "messi is GOAT   ");
             draw_bmp_fail();
             pthread_cancel(thread);
-            //ledOffAll();
+            ledOffAll();
             returnValue = msgrcv(msgID, &messageRxData, sizeof(int), 0, 0); // 버튼 입력 받기
             if (returnValue < 0)
             {
