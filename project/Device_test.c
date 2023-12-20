@@ -434,9 +434,9 @@ int main(void)
 
                 int Cx = (Ax + 20);
                 int Cy = (Ay + 20);
-                int obstacleLeft = obstacleX - 20;
-                int obstacleRight = obstacleX + 70;  // Assuming obstacle width is 50 and adding 10 for some margin
-                int obstacleTop = obstacleY-20;
+                int obstacleLeft = obstacleX ;
+                int obstacleRight = obstacleX + 70;  // 
+                int obstacleTop = obstacleY;
                 int obstacleBottom = obstacleY + 70;  // Assuming obstacle height is 50
                
                 if(score==0)
@@ -504,10 +504,10 @@ int main(void)
                     ledOnOff(1, ON);
                 }
 
-                draw_bmp_custom("goat.bmp", Ax, Ay, 80 , 80, 0);
+                draw_bmp_custom("goat.bmp", Ax, Ay, 70 , 70, 0);
                 level_1_update(); // 장애물 이동 및 그리기
                 usleep(100000);
-                draw_square(Ax, Ay, 80, 80, 0xFFFFFF, 0);
+                draw_square(Ax, Ay, 70, 70, 0xFFFFFF, 0);
 
                 printf("Coordinate: %d, %d\r\n", Cx, Cy);
             }
@@ -535,15 +535,15 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
         int Cx = (Ax + 20);
         int Cy = (Ay + 20);
 
-                int obstacleLeft2_1 = obstacleX2_1 - 10;
-                int obstacleRight2_1 = obstacleX2_2 + 80;  
-                int obstacleTop2_1 = obstacleY2_1-10;
-                int obstacleBottom2_1 = obstacleY2_1 + 80;  
+                int obstacleLeft2_1 = obstacleX2_1 ;
+                int obstacleRight2_1 = obstacleX2_2 + 65;  
+                int obstacleTop2_1 = obstacleY2_1;
+                int obstacleBottom2_1 = obstacleY2_1 + 65;  
                 
-                int obstacleLeft2_2 = obstacleX2_2 - 10;
-                int obstacleRight2_2 = obstacleX2_2 + 80;  
-                int obstacleTop2_2 = obstacleY2_2-10;
-                int obstacleBottom2_2 = obstacleY2_2 + 80;
+                int obstacleLeft2_2 = obstacleX2_2 ;
+                int obstacleRight2_2 = obstacleX2_2 + 65;  
+                int obstacleTop2_2 = obstacleY2_2;
+                int obstacleBottom2_2 = obstacleY2_2 + 65;
 
                 if(score==0)
                 {
@@ -596,7 +596,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
             level_2_obj_3(ON);
         }
 
-        if (Cx > 80 && Cx < 1024 - 80 && Cy > 80 && Cy < 600 - 80)
+        if (Cx > 50 && Cx < 1024 - 80 && Cy > 80 && Cy < 600 - 80)
         {
             if (Cx > 358 && Cx < 358 + 308 && Cy > 250 && Cy < 250 + 100)
             {
@@ -641,10 +641,10 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 orb_count = 3;
         }
 
-                draw_bmp_custom("goat.bmp", Ax, Ay, 80 , 80, 0);
+                draw_bmp_custom("goat.bmp", Ax, Ay, 70 , 70, 0);
                 level_2_update(); // 장애물 이동 및 그리기
                 usleep(100000);
-                draw_square(Ax, Ay, 80, 80, 0xFFFFFF, 0);
+                draw_square(Ax, Ay, 70, 70, 0xFFFFFF, 0);
 
                 printf("Coordinate: %d, %d\r\n", Cx, Cy);
             }
@@ -670,20 +670,20 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
 
                 int Cx = (Ax + 20);
                 int Cy = (Ay + 20);
-                int obstacleLeft3_1 = obstacleX3_1 - 10;
-                int obstacleRight3_1 = obstacleX3_2 + 80;  
-                int obstacleTop3_1 = obstacleY3_1-10;
-                int obstacleBottom3_1 = obstacleY3_1 + 80;  
+                int obstacleLeft3_1 = obstacleX3_1 ;
+                int obstacleRight3_1 = obstacleX3_2 + 65;  
+                int obstacleTop3_1 = obstacleY3_1;
+                int obstacleBottom3_1 = obstacleY3_1 + 65;  
                 
-                int obstacleLeft3_2 = obstacleX3_2 - 10;
-                int obstacleRight3_2 = obstacleX3_2 + 80;  
-                int obstacleTop3_2 = obstacleY3_2-10;
-                int obstacleBottom3_2 = obstacleY3_2 + 80;
+                int obstacleLeft3_2 = obstacleX3_2 ;
+                int obstacleRight3_2 = obstacleX3_2 + 65;  
+                int obstacleTop3_2 = obstacleY3_2;
+                int obstacleBottom3_2 = obstacleY3_2 + 65;
 
-                int obstacleLeft3_3 = obstacleX3_3 - 10;
-                int obstacleRight3_3 = obstacleX3_3 + 80;  
-                int obstacleTop3_3 = obstacleY3_3-10;
-                int obstacleBottom3_3 = obstacleY3_3 + 80;
+                int obstacleLeft3_3 = obstacleX3_3 ;
+                int obstacleRight3_3 = obstacleX3_3 + 65;  
+                int obstacleTop3_3 = obstacleY3_3;
+                int obstacleBottom3_3 = obstacleY3_3 + 65;
                 if(score==0)
                 {
                     status = FAIL;
@@ -716,23 +716,23 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 }
                 else if (orb_count == 2)
                 {
-            if (level3_orb1_trigger == 1)
-                level_2_obj_1(OFF);
-            else if (level3_orb2_trigger == 1)
-                level_2_obj_2(OFF);
-            else if (level3_orb3_trigger == 1)
-                level_2_obj_3(OFF);
-           ledOnOff(6, ON);
+                    if (level3_orb1_trigger == 1)
+                         level_2_obj_1(OFF);
+                    else if (level3_orb2_trigger == 1)
+                         level_2_obj_2(OFF);
+                    else if (level3_orb3_trigger == 1)
+                              level_2_obj_3(OFF);
+                  ledOnOff(6, ON);
                 }
                 else if (orb_count == 1)
                 {
-            if (level3_orb1_trigger == 1)
-                level_2_obj_1(OFF);
-            else if (level3_orb2_trigger == 1)
-                level_2_obj_2(OFF);
-            else if (level3_orb3_trigger == 1)
-                level_2_obj_3(OFF);
-           ledOnOff(5, ON);
+                    if (level3_orb1_trigger == 1)
+                        level_2_obj_1(OFF);
+                    else if (level3_orb2_trigger == 1)
+                        level_2_obj_2(OFF);
+                    else if (level3_orb3_trigger == 1)
+                        level_2_obj_3(OFF);
+                   ledOnOff(5, ON);
                 }
                 else if (orb_count == 0)
                 {
