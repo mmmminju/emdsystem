@@ -191,7 +191,6 @@ void level_3_background(void)
     //draw_background(0x000000, 0);
     //draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
     draw_bmp_custom("pitch.bmp" ,0,0,1024,600,0);    
-    draw_square(258, 200, 150, 200, 0x000000, 0);
     draw_square(566, 200, 150, 200, 0x000000, 0);
     level_3_obstacle(1);
 }
@@ -670,8 +669,8 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 Ax = Ax + (ax * mobility);
                 Ay = Ay + (ay * mobility);
 
-                int Cx = (Ax + 35);
-                int Cy = (Ay + 35);
+                int Cx = (Ax + 20);
+                int Cy = (Ay + 20);
                 int obstacleLeft3_1 = obstacleX3_1 ;
                 int obstacleRight3_1 = obstacleX3_2 + 65;  
                 int obstacleTop3_1 = obstacleY3_1;
@@ -745,7 +744,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
 
                 if (Cx > 80 && Cx < 1024 - 80 && Cy > 80 && Cy < 600 - 80)
                 {
-                    if (Cx > 258 && Cx < 258 + 150 && Cy > 200 && Cy < 200 + 200)
+                    if (Cx > 220 && Cx < 390  && Cy > 165 && Cy < 435)
                     {
                         status = FAIL;
                         flag_safe = 0;
