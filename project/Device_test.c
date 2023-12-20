@@ -440,8 +440,8 @@ int main(void)
                 Ax = Ax + (ax * mobility);
                 Ay = Ay + (ay * mobility);
 
-                int Cx = (Ax + 70);
-                int Cy = (Ay + 70);
+                int Cx = (Ax + 35);
+                int Cy = (Ay + 35);
                 int obstacleLeft = obstacleX ;
                 int obstacleRight = obstacleX + 65;  // 
                 int obstacleTop = obstacleY;
@@ -490,24 +490,32 @@ int main(void)
                 }
 
                 if (orb_count == 0 && Cx > 340-10 && Cx < 340 + 80 && Cy > 220-10 && Cy < 220 + 80)
-                {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+                {   
+                    usleep(100);
+                    draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
                     orb_count = 1;
                     orb_case = 1;
                     ledOnOff(0, ON);
                 }
                 if (orb_count == 0 && Cx > 730-10 && Cx < 730 + 80 && Cy > 400-10 && Cy < 400 + 80)
-                {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+                {  
+                    usleep(100);
+                    draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
                     orb_count = 1;
                     orb_case = 2;
                     ledOnOff(0, ON);
                 }
                 if (orb_count == 1 && Cx > 340-10 && Cx < 340 + 80 && Cy > 220-10 && Cy < 220 + 80 && orb_case ==2)
-                {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+                {   
+                    usleep(100);
+                    draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
                     orb_count = 2;
                     ledOnOff(1, ON);
                 }
                 if (orb_count == 1 && Cx > 730-10 && Cx < 730 + 80 && Cy > 400-10 && Cy < 400 + 80 && orb_case ==1)
-                {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+                {  
+                    usleep(100);
+                    draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
                     orb_count = 2;
                     ledOnOff(1, ON);
                 }
@@ -628,7 +636,9 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
         }
 
         if (level2_orb1_trigger == 0 && Cx > 850-10 && Cx < 850 + 80 && Cy > 400-10 && Cy < 400 + 80)
-        {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+        {   
+            usleep(100);
+            draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level2_orb1_trigger = 1;
             if (orb_count == 0)
                 orb_count = 1;
@@ -638,7 +648,9 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 orb_count = 3;
         }
         if (level2_orb2_trigger == 0 && Cx > 600-10 && Cx < 600 + 80 && Cy > 100-10 && Cy < 100 + 80)
-        {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+        {  
+            usleep(100);           
+            draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level2_orb2_trigger = 1;
             if (orb_count == 0)
                 orb_count = 1;
@@ -648,7 +660,9 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 orb_count = 3;
         }
         if (level2_orb3_trigger == 0 && Cx > 440-20 && Cx < 440 + 90 && Cy > 450-20 && Cy < 450 + 90)
-        {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+        {   
+            usleep(100);
+            draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level2_orb3_trigger = 1;
             if (orb_count == 0)
                 orb_count = 1;
