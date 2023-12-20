@@ -670,7 +670,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
             else if (orb_count == 2)
                 orb_count = 3;
         }
-        if (level2_orb3_trigger == 0 && Cx > 440-20 && Cx < 440 + 90 && Cy > 450-20 && Cy < 450 + 90)
+        if (level2_orb3_trigger == 0 && Cx > 455 && Cx < 475 && Cy > 450-20 && Cy < 450 + 90)
         {   
             usleep(100);
             draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
@@ -821,7 +821,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
             else if (orb_count == 2)
                 orb_count = 3;
                 }
-                if (level3_orb2_trigger == 0 && Cx > 120-10 && Cx < 120 + 80 && Cy > 120-10 && Cy < 120 + 80)
+                if (level3_orb2_trigger == 0 && Cx > 105 && Cx < 160 && Cy > 105 && Cy < 160)
                 {draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level3_orb2_trigger = 1;
             if (orb_count == 0)
