@@ -25,7 +25,7 @@ static int msgID = 0;
 int status = MENU;
 int score;
 static int obstacleX=700;
-static int obstacleY=275;
+static int obstacleY=300;
 
 static int obstacleX2_1=750;
 static int obstacleY2_1=100;
@@ -50,6 +50,15 @@ void *score_timer(void *data)
     }
 }
 
+int set_Mobility()
+{
+    int temp = readTEMP() / 5;
+    if (temp > 12)
+        temp = 12;
+    return temp;
+}
+
+
 void HW_init()
 {
     //init_accel();
@@ -65,13 +74,7 @@ void HW_close()
     textLCD_off();
     ledExit();
 }
-int set_Mobility()
-{
-    int temp = readTEMP() / 5;
-    if (temp > 12)
-        temp = 12;
-    return temp;
-}
+
 void level_1_obstacle(int OnOff)
 {
 
@@ -181,8 +184,8 @@ void level_2_background(void)
     //draw_background(0x000000, 0);
     //draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
     draw_bmp_custom("pitch.bmp" ,0,0,1024,600,0);    
-    draw_bmp_custom("red.bmp" ,412,200,200,200,0);     
-    //draw_square(358, 250, 308, 100, 0x000000, 0);
+  //  draw_square(358, 250, 308, 100, 0x000000, 0);
+    draw_bmp_custom("red.bmp" ,412,200,200,200,0); 
     level_2_obstacle(1);
 }
 
@@ -207,7 +210,7 @@ void level_2_update(void)
 {
     level_2_obstacle(0); // 장애물 지우기
     usleep(500);    
-    level_2_obstacle(1); // 장애물 그리기
+    level_2_obstacle(1); //  장애물 그리기
           
 }
 void level_3_update(void)
@@ -247,7 +250,9 @@ void level_2_obj_1(int OnOff)
     if (OnOff == 1)
         draw_bmp_custom("champs.bmp", 850, 400, 50, 50, 0);
     else if (OnOff == 0)
-        draw_bmp_custom("grass.bmp", 850, 400, 50, 50, 0);
+        //draw_square(850, 400, 50, 50, 0xFFFFFF, 0);
+ draw_bmp_custom("grass.bmp", 850, 400, 50, 50, 0);
+
     else
         ;
 }
@@ -325,7 +330,7 @@ int main(void)
     int Ax;
     int Ay;
     char buffer[17];
-    sprintf(buffer, "Difficulty: %d", mobility);
+    sprintf(buffer, "Difficulty:    %d", mobility);
     pthread_t thread;
     int thread_id;
 
@@ -417,7 +422,7 @@ int main(void)
             flag_safe = 1;
             orb_count = 0;
             orb_case = 0;
-
+           int fnd_count =0;
                 pthread_t buzzerThreadID;
                 int buzzerThreadResult = pthread_create(&buzzerThreadID, NULL, buzzerThread, NULL);
                 if (buzzerThreadResult != 0)
@@ -435,12 +440,12 @@ int main(void)
                 Ax = Ax + (ax * mobility);
                 Ay = Ay + (ay * mobility);
 
-                int Cx = (Ax + 35);
-                int Cy = (Ay + 35);
+                int Cx = (Ax + 70);
+                int Cy = (Ay + 70);
                 int obstacleLeft = obstacleX ;
-                int obstacleRight = obstacleX + 65;  
+                int obstacleRight = obstacleX + 65;  // 
                 int obstacleTop = obstacleY;
-                int obstacleBottom = obstacleY + 65;  
+                int obstacleBottom = obstacleY + 65;  // Assuming obstacle height is 50
                
                 if(score==0)
                 {
@@ -476,7 +481,7 @@ int main(void)
                 }
 
                 if (Cx > 80 && Cx < 1024 - 80 && Cy > 80 && Cy < 600 - 80)
-                {
+                { draw_bmp_custom("goat.bmp", Ax, Ay, 70 , 70, 0);  
                 }
                 else
                 {
@@ -485,29 +490,35 @@ int main(void)
                 }
 
                 if (orb_count == 0 && Cx > 340-10 && Cx < 340 + 80 && Cy > 220-10 && Cy < 220 + 80)
-                {
+                {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
                     orb_count = 1;
                     orb_case = 1;
                     ledOnOff(0, ON);
                 }
                 if (orb_count == 0 && Cx > 730-10 && Cx < 730 + 80 && Cy > 400-10 && Cy < 400 + 80)
-                {
+                {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
                     orb_count = 1;
                     orb_case = 2;
                     ledOnOff(0, ON);
                 }
                 if (orb_count == 1 && Cx > 340-10 && Cx < 340 + 80 && Cy > 220-10 && Cy < 220 + 80 && orb_case ==2)
-                {
+                {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
                     orb_count = 2;
                     ledOnOff(1, ON);
                 }
                 if (orb_count == 1 && Cx > 730-10 && Cx < 730 + 80 && Cy > 400-10 && Cy < 400 + 80 && orb_case ==1)
-                {
+                {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
                     orb_count = 2;
                     ledOnOff(1, ON);
                 }
-
-                draw_bmp_custom("goat.bmp", Ax, Ay, 70 , 70, 0);
+                 if (orb_count == 1 && fnd_count ==0){
+                     writeLCD(1, "SIUUUUUUUUUU");
+                     writeLCD(2, "The Goat Score 1");
+                     fnd_count =1; }
+                 if (orb_count == 2 && fnd_count ==1){
+                     writeLCD(1, "SIUUUUUUUUUU");
+                     writeLCD(2, "The Goat Score 2"); 
+                    fnd_count =2; }
                 level_1_update(); // 장애물 이동 및 그리기
                 usleep(100000);
                 draw_bmp_custom("grass.bmp", Ax, Ay, 70 , 70, 0);
@@ -525,6 +536,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
     flag_safe = 1;
     int level2_orb1_trigger = 0, level2_orb2_trigger = 0, level2_orb3_trigger = 0;
     int orb_count = 0;
+    fnd_count =0;
     level_2_background();
 
     while (flag_safe)
@@ -574,6 +586,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
         }
         else if (orb_count == 2)
         {
+
             if (level2_orb1_trigger == 1)
                 level_2_obj_1(OFF);
             else if (level2_orb2_trigger == 1)
@@ -584,6 +597,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
 }
         else if (orb_count == 1)
         {
+
             if (level2_orb1_trigger == 1)
                 level_2_obj_1(OFF);
             else if (level2_orb2_trigger == 1)
@@ -600,7 +614,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
         }
 
         if (Cx > 50 && Cx < 1024 - 80 && Cy > 80 && Cy < 600 - 80)
-        {
+        {draw_bmp_custom("goat.bmp", Ax, Ay, 70 , 70, 0);
             if (Cx > 377 && Cx < 647 && Cy > 165 && Cy < 435)
             {
                 status = FAIL;
@@ -614,7 +628,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
         }
 
         if (level2_orb1_trigger == 0 && Cx > 850-10 && Cx < 850 + 80 && Cy > 400-10 && Cy < 400 + 80)
-        {
+        {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level2_orb1_trigger = 1;
             if (orb_count == 0)
                 orb_count = 1;
@@ -624,7 +638,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 orb_count = 3;
         }
         if (level2_orb2_trigger == 0 && Cx > 600-10 && Cx < 600 + 80 && Cy > 100-10 && Cy < 100 + 80)
-        {
+        {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level2_orb2_trigger = 1;
             if (orb_count == 0)
                 orb_count = 1;
@@ -634,7 +648,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 orb_count = 3;
         }
         if (level2_orb3_trigger == 0 && Cx > 440-20 && Cx < 440 + 90 && Cy > 450-20 && Cy < 450 + 90)
-        {
+        {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level2_orb3_trigger = 1;
             if (orb_count == 0)
                 orb_count = 1;
@@ -643,8 +657,16 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
             else if (orb_count == 2)
                 orb_count = 3;
         }
-
-                draw_bmp_custom("goat.bmp", Ax, Ay, 70 , 70, 0);
+        if(fnd_count == 0 && orb_count == 1) 
+            {        writeLCD(1, "SIUUUUUUUUUU");
+                     writeLCD(2, "The Goat Score 1"); fnd_count = 1;}
+        if(fnd_count == 1 && orb_count == 2) 
+            {        writeLCD(1, "SIUUUUUUUUUU");
+                     writeLCD(2, "The Goat Score 2"); fnd_count = 2;}
+        if(fnd_count == 2 && orb_count == 3) 
+            {        writeLCD(1, "SIUUUUUUUUUU");
+                     writeLCD(2, "The Goat Score 3"); fnd_count = 3;}
+         
                 level_2_update(); // 장애물 이동 및 그리기
                 usleep(100000);
                 draw_bmp_custom("grass.bmp", Ax, Ay, 70 , 70, 0);
@@ -662,6 +684,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
             flag_safe = 1;
     	     int level3_orb1_trigger = 0, level3_orb2_trigger = 0, level3_orb3_trigger = 0;
    	        orb_count = 0;
+            fnd_count = 0; 
             level_3_background();
             while (flag_safe)
             {
@@ -671,8 +694,8 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 Ax = Ax + (ax * mobility);
                 Ay = Ay + (ay * mobility);
 
-                int Cx = (Ax + 20);
-                int Cy = (Ay + 20);
+                int Cx = (Ax + 35);
+                int Cy = (Ay + 35);
                 int obstacleLeft3_1 = obstacleX3_1 ;
                 int obstacleRight3_1 = obstacleX3_2 + 65;  
                 int obstacleTop3_1 = obstacleY3_1;
@@ -745,7 +768,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 }
 
                 if (Cx > 80 && Cx < 1024 - 80 && Cy > 80 && Cy < 600 - 80)
-                {
+                {draw_bmp_custom("goat.bmp", Ax, Ay, 70 , 70, 0);
                     if (Cx > 220 && Cx < 390  && Cy > 165 && Cy < 435)
                     {
                         status = FAIL;
@@ -764,7 +787,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 }
 
                 if (level3_orb1_trigger == 0 && Cx > 870-10 && Cx < 870 + 80 && Cy > 250-10 && Cy < 250 + 80)
-                {
+                {draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level3_orb1_trigger = 1;
             if (orb_count == 0)
                 orb_count = 1;
@@ -774,7 +797,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 orb_count = 3;
                 }
                 if (level3_orb2_trigger == 0 && Cx > 120-10 && Cx < 120 + 80 && Cy > 120-10 && Cy < 120 + 80)
-                {
+                {draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level3_orb2_trigger = 1;
             if (orb_count == 0)
                 orb_count = 1;
@@ -784,7 +807,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 orb_count = 3;
                 }
                 if (level3_orb3_trigger == 0 && Cx > 512-10 && Cx < 512 + 80 && Cy > 300-10 && Cy < 300 + 80)
-                {
+                {draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level3_orb3_trigger = 1;
             if (orb_count == 0)
                 orb_count = 1;
@@ -793,8 +816,17 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
             else if (orb_count == 2)
                 orb_count = 3;
                 }
+        if(fnd_count == 0 && orb_count == 1) 
+            {        writeLCD(1, "SIUUUUUUUUUU");
+                     writeLCD(2, "The Goat Score 1"); fnd_count = 1;}
+        if(fnd_count == 1 && orb_count == 2) 
+            {        writeLCD(1, "SIUUUUUUUUUU");
+                     writeLCD(2, "The Goat Score 2"); fnd_count = 2;}
+        if(fnd_count == 2 && orb_count == 3) 
+            {        writeLCD(1, "SIUUUUUUUUUU");
+                     writeLCD(2, "The Goat Score 3"); fnd_count = 3;}
 
-                draw_bmp_custom("goat.bmp", Ax, Ay, 70 , 70, 0);
+            //    draw_bmp_custom("goat.bmp", Ax, Ay, 70 , 70, 0);
                 level_3_update();
                 usleep(100000);
                 draw_bmp_custom("grass.bmp", Ax, Ay, 70 , 70, 0);
@@ -808,6 +840,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
             writeLCD(2, "Failed          ");
             draw_bmp_fail();
             pthread_cancel(thread);
+            //ledOffAll();
             returnValue = msgrcv(msgID, &messageRxData, sizeof(int), 0, 0); // 버튼 입력 받기
             if (returnValue < 0)
             {
