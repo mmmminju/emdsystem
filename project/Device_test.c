@@ -337,7 +337,7 @@ int main(void)
             draw_bmp_menu();
             printf("Press Key\r\n");
             writeLCD(1, "Game Menu       ");
-            //writeLCD(2, "                ");
+            writeLCD(2, "                ");
             for (int i = 0; i < 8; i++)
             {
                 ledOnOff(i, OFF);
