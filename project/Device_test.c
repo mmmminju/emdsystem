@@ -25,7 +25,7 @@ static int msgID = 0;
 int status = MENU;
 int score;
 static int obstacleX=700;
-static int obstacleY=300;
+static int obstacleY=275;
 
 static int obstacleX2_1=750;
 static int obstacleY2_1=100;
@@ -65,7 +65,13 @@ void HW_close()
     textLCD_off();
     ledExit();
 }
-
+int set_Mobility()
+{
+    int temp = readTEMP() / 5;
+    if (temp > 12)
+        temp = 12;
+    return temp;
+}
 void level_1_obstacle(int OnOff)
 {
 
@@ -175,7 +181,8 @@ void level_2_background(void)
     //draw_background(0x000000, 0);
     //draw_square(50, 50, 1024 - 100, 600 - 100, 0xFFFFFF, 0);
     draw_bmp_custom("pitch.bmp" ,0,0,1024,600,0);    
-    draw_square(358, 250, 308, 100, 0x000000, 0);
+    draw_bmp_custom("red.bmp" ,412,200,200,200,0);     
+    //draw_square(358, 250, 308, 100, 0x000000, 0);
     level_2_obstacle(1);
 }
 
@@ -239,7 +246,7 @@ void level_2_obj_1(int OnOff)
     if (OnOff == 1)
         draw_bmp_custom("champs.bmp", 850, 400, 50, 50, 0);
     else if (OnOff == 0)
-        draw_square(850, 400, 50, 50, 0xFFFFFF, 0);
+        draw_bmp_custom("grass.bmp", 850, 400, 50, 50, 0);
     else
         ;
 }
@@ -259,7 +266,7 @@ void level_2_obj_3(int OnOff)
     if (OnOff == 1)
         draw_bmp_custom("gold.bmp", 440, 450, 50, 50, 0);
     else if (OnOff == 0)
-        draw_square(440, 450, 50, 50, 0xFFFFFF, 0);
+        draw_bmp_custom("grass.bmp", 440, 450, 50, 50, 0);
     else
         ;
 }
@@ -279,7 +286,7 @@ void level_3_obj_2(int OnOff)
     if (OnOff == 1)
         draw_bmp_custom("gold.bmp", 120, 120, 50, 50, 0);
     else if (OnOff == 0)
-        draw_square(120, 120, 50, 50, 0xFFFFFF, 0);
+        draw_bmp_custom("grass.bmp", 120, 120, 50, 50, 0);
     else
         ;
 }
@@ -427,8 +434,8 @@ int main(void)
                 Ax = Ax + (ax * mobility);
                 Ay = Ay + (ay * mobility);
 
-                int Cx = (Ax + 20);
-                int Cy = (Ay + 20);
+                int Cx = (Ax + 35);
+                int Cy = (Ay + 35);
                 int obstacleLeft = obstacleX ;
                 int obstacleRight = obstacleX + 65;  // 
                 int obstacleTop = obstacleY;
@@ -527,8 +534,8 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
         Ax = Ax + (ax * mobility);
         Ay = Ay + (ay * mobility);
 
-        int Cx = (Ax + 20);
-        int Cy = (Ay + 20);
+        int Cx = (Ax + 35);
+        int Cy = (Ay + 35);
 
                 int obstacleLeft2_1 = obstacleX2_1 ;
                 int obstacleRight2_1 = obstacleX2_2 + 65;  
@@ -593,7 +600,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
 
         if (Cx > 50 && Cx < 1024 - 80 && Cy > 80 && Cy < 600 - 80)
         {
-            if (Cx > 358 && Cx < 358 + 308 && Cy > 250 && Cy < 250 + 100)
+            if (Cx > 377 && Cx < 647 && Cy > 165 && Cy < 435)
             {
                 status = FAIL;
                 flag_safe = 0;
@@ -663,8 +670,8 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 Ax = Ax + (ax * mobility);
                 Ay = Ay + (ay * mobility);
 
-                int Cx = (Ax + 20);
-                int Cy = (Ay + 20);
+                int Cx = (Ax + 35);
+                int Cy = (Ay + 35);
                 int obstacleLeft3_1 = obstacleX3_1 ;
                 int obstacleRight3_1 = obstacleX3_2 + 65;  
                 int obstacleTop3_1 = obstacleY3_1;
