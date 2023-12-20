@@ -127,15 +127,17 @@ void level_3_obstacle(int OnOff)
     static int obstacleDirection2 = 1; // 1: 오른쪽, -1: 왼쪽
     static int obstacleDirection3 = 1; // 1: 아래쪽, -1: 위쪽
     if (OnOff == 1)
-        {        
-        draw_bmp_custom("joat.bmp", obstacleX3_1, obstacleY3_1, 65, 65, 0);
+        { 
+        if(obstacleDirection1 == -1)   
+        draw_bmp_custom("koreanguy_left.bmp", obstacleX3_1, obstacleY3_1, 130, 65, 0);
+        else draw_bmp_custom("koreanguy.bmp", obstacleX3_1, obstacleY3_1, 130, 65, 0);       
         draw_bmp_custom("joat.bmp", obstacleX3_2, obstacleY3_2, 65, 65, 0);
         draw_bmp_custom("joat.bmp", obstacleX3_3, obstacleY3_3, 65, 65, 0);
         }
     else if (OnOff == 0)
         {
-        draw_bmp_custom("grass.bmp", obstacleX3_1+10, obstacleY3_1, 65, 65, 0);
-        draw_bmp_custom("grass.bmp", obstacleX3_1-10, obstacleY3_1, 65, 65, 0);
+        draw_bmp_custom("grass.bmp", obstacleX3_1+10, obstacleY3_1, 130, 65, 0);
+        draw_bmp_custom("grass.bmp", obstacleX3_1-10, obstacleY3_1, 130, 65, 0);
         draw_bmp_custom("grass.bmp", obstacleX3_2+10, obstacleY3_2, 65, 65, 0);
         draw_bmp_custom("grass.bmp", obstacleX3_2-10, obstacleY3_2, 65, 65, 0);        
         draw_bmp_custom("grass.bmp", obstacleX3_3, obstacleY3_3+20, 65, 65, 0);
@@ -188,7 +190,7 @@ void level_3_background(void)
     //draw_square(258, 200, 150, 200, 0x000000, 0);
     draw_bmp_custom("luck.bmp" ,255,200,150,200,0);
     //draw_square(566, 200, 150, 200, 0x000000, 0);
-    draw_bmp_custom("red.bmp" ,560,200,150,200,0); 
+     draw_bmp_custom("red.bmp" ,560,200,150,200,0); 
     level_3_obstacle(1);
 }
 void level_1_update(void)
@@ -501,32 +503,24 @@ int main(void)
                 }
 
                 if (orb_count == 0 && Cx > 340-10 && Cx < 340 + 80 && Cy > 220-10 && Cy < 220 + 80)
-                {   
-                    usleep(100);
-                    draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+                {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
                     orb_count = 1;
                     orb_case = 1;
                     ledOnOff(0, ON);
                 }
                 if (orb_count == 0 && Cx > 730-10 && Cx < 730 + 80 && Cy > 400-10 && Cy < 400 + 80)
-                {  
-                    usleep(100);
-                    draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+                {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
                     orb_count = 1;
                     orb_case = 2;
                     ledOnOff(0, ON);
                 }
                 if (orb_count == 1 && Cx > 340-10 && Cx < 340 + 80 && Cy > 220-10 && Cy < 220 + 80 && orb_case ==2)
-                {   
-                    usleep(100);
-                    draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+                {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
                     orb_count = 2;
                     ledOnOff(1, ON);
                 }
                 if (orb_count == 1 && Cx > 730-10 && Cx < 730 + 80 && Cy > 400-10 && Cy < 400 + 80 && orb_case ==1)
-                {  
-                    usleep(100);
-                    draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+                {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
                     orb_count = 2;
                     ledOnOff(1, ON);
                 }
@@ -647,9 +641,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
         }
 
         if (level2_orb1_trigger == 0 && Cx > 850-10 && Cx < 850 + 80 && Cy > 400-10 && Cy < 400 + 80)
-        {   
-            usleep(100);
-            draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+        {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level2_orb1_trigger = 1;
             if (orb_count == 0)
                 orb_count = 1;
@@ -659,9 +651,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 orb_count = 3;
         }
         if (level2_orb2_trigger == 0 && Cx > 600-10 && Cx < 600 + 80 && Cy > 100-10 && Cy < 100 + 80)
-        {  
-            usleep(100);           
-            draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+        {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level2_orb2_trigger = 1;
             if (orb_count == 0)
                 orb_count = 1;
@@ -671,9 +661,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 orb_count = 3;
         }
         if (level2_orb3_trigger == 0 && Cx > 455 && Cx < 475 && Cy > 450-20 && Cy < 450 + 90)
-        {   
-            usleep(100);
-            draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
+        {   draw_bmp_custom("SIU.bmp", Ax, Ay, 70 , 70, 0);
             level2_orb3_trigger = 1;
             if (orb_count == 0)
                 orb_count = 1;
@@ -722,7 +710,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
                 int Cx = (Ax + 35);
                 int Cy = (Ay + 35);
                 int obstacleLeft3_1 = obstacleX3_1 ;
-                int obstacleRight3_1 = obstacleX3_2 + 65;  
+                int obstacleRight3_1 = obstacleX3_2 + 130;  
                 int obstacleTop3_1 = obstacleY3_1;
                 int obstacleBottom3_1 = obstacleY3_1 + 65;  
                 
