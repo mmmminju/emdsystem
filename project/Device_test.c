@@ -437,9 +437,9 @@ int main(void)
                 int Cx = (Ax + 35);
                 int Cy = (Ay + 35);
                 int obstacleLeft = obstacleX ;
-                int obstacleRight = obstacleX + 65;  // 
+                int obstacleRight = obstacleX + 65;  
                 int obstacleTop = obstacleY;
-                int obstacleBottom = obstacleY + 65;  // Assuming obstacle height is 50
+                int obstacleBottom = obstacleY + 65;  
                
                 if(score==0)
                 {
