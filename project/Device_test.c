@@ -66,14 +66,6 @@ void HW_close()
     ledExit();
 }
 
-int set_Mobility()
-{
-    int temp = readTEMP() / 5;
-    if (temp > 12)
-        temp = 12;
-    return temp;
-}
-
 void level_1_obstacle(int OnOff)
 {
 
