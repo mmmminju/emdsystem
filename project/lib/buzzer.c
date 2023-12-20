@@ -122,25 +122,40 @@ buzzerStopSong(); usleep(100000);
 const char song_note [] = 
 "[@B]" //바장조
 
-"E6 D C# D 	F8 P G6 F E F	A8 P B6 A G# A"
-"E+ D+ C+# D+ 	E+ D+	C+# D+		F+4 D+8 F+	E+ D+ C+ D+	E+D+C+D+E+D+C+B$"
-"A4 E6 D C# D F8 P G6 F E F A8 P B6 A G# A"
-"E+ D+ C+# D+   E+ D+ C+# D+    F+4 D+8 F+ E+D+C+D+E+D+C+D+E+D+C+B$"
+"F A A D+8 D+8 F+#8 F+#8 A+8"
+"F A A D+8 D+8 F+#8 F+#8 A+8"
+"B+8   G+8 D++8   D++8"
+"F A A D+8 D+8 F+#8 F+#8 A+8"
 
-"A4 A8 B C+ C+ D+6 C+ B A G4 A8 B C+ C+ D+6 C+ B A G4 F8 G"
-"A A B6 A G F E4 F8 G A A B6 A G F E4 E6 D C# D"
-"F8 P G6 F E F A8 P8 B6 A G# A E+ D+ C+# D+ E+D+C+# D+ F+4 D+8 E+"
-"F+8 E+D+C+# D+ABGF4 E8D6ED4 D+8 E+ F+#4 D+8 E+8"
+"F A A D+8 D+8 F+#8 F+#8 A+8"
+"C++8  A+#8 F+#8 C++8   "
+"C++8    C++8 C++8  "
+"B+8    G+8   "
+"G+4   "
 
-"F+8# E+ D+ C+# B$ C+# D+ E+ C+# A D+ E+ F+#4 D+8 E+ F+# E+ D+ C+#"
-"B$ E+ C+# A D+4 D+8 E+ F+#4 D+8 E+8 F+#4 E+8 D+ C+# B$ C+# D+ E+"
-"C+# A D+ E+ F+#4 D+8 E+ F+# E+ D+ C+# B$ E+ C+# A D+4 A6 B A G F G F E D F E D C# D E C# A B$ C+# A"
+"A C+#8 C+#8 E+8 E+8 C++8 C++8 E++8"
+"A C+#8 C+#8 E+8 E+8 C++8 C++8 E++8"
+"F A A D+8 D+8 F+#8 F+#8 "
+"F A A D+8 D+8 F+#8 D+8 "
+"G+4   D+4"
 
-"D C# D E F E F G A G# A G# A B A G"
-"F G F E D F E D C D E C A B$ C+ A B$ C+ D+ B$ G# A B$ G$"
-"A4"
+"E+8 G+8 G+8 C++8 C++8 E++8 E++8 G++8"
+"E+8 G+8 G+8 C++8 C++8 E++8 E++8 G++8"
+"A++8  F++8 C+++8  C+++8 "
+"E+8 G+8 G+8 C++8 C++8 E++8 E++8 G++8"
+
+"E+8 G+8 G+8 C++8 C++8 E++8 E++8 G++8"
+"B++8  B+8 E++8 B++8   "
+"B++4  B++4 B++4"
+"A++4  F++4  "
+"A++4   "
+
+"G+8 B+8 B+8 D++8 D++8 G++8 G++8 B++8"
+"G+8 B+8 B+8 D++8 D++8 G++8 G++8 B++8"
+"E+8 G+8 G+8 C++8 C++8 E++8 E++8 "
+"E+8 G+8 G+8 C++8 C++8 E++8 C++8 "
+"F++4   C++4"
 ;
-
 
 enum
 {
