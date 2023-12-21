@@ -304,7 +304,7 @@ void level_3_obj_3(int OnOff)
 void *buzzerThread(void *data)
 {   
     buzzerInit();   
-  //  buzzerPlayLevel1(1);
+    buzzerPlayLevel1(1);
     return NULL;
     pthread_exit(NULL); // 쓰레드 종료
 }
@@ -337,7 +337,7 @@ int main(void)
             draw_bmp_menu();
             printf("Press Key\r\n");
             writeLCD(1, "Game Menu       ");
-            writeLCD(2, "                ");
+            //writeLCD(2, "                ");
             for (int i = 0; i < 8; i++)
             {
                 ledOnOff(i, OFF);
@@ -420,9 +420,10 @@ int main(void)
             writeLCD(2, "                ");
             draw_background(0x000000, 0);
             buttonExit();
+            buzzerExit();
             return 0;
 
-        case LEVEL1: // 레벨 1 : 오브 2개, R>B 순서로 터치
+        case LEVEL1: 
 
             score = 90;
             thread_id = pthread_create(&thread, NULL, score_timer, NULL); // 점수 계산 타이머 시작
@@ -540,7 +541,7 @@ int main(void)
             }
             break;
 
-case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
+case LEVEL2: 
     writeLCD(1, "LEVEL2          ");
     writeLCD(2, buffer);
     printf("LEVEL2\r\n");
@@ -688,7 +689,7 @@ case LEVEL2: // 레벨 2 : R > G > B 순서로 터치
             }
     break;
 
-       case LEVEL3: // 레벨 3 : R > G > B 순서로 터치
+       case LEVEL3: 
             writeLCD(1, "LEVEL3          ");
             writeLCD(2, buffer);
             printf("LEVEL3\r\n");
